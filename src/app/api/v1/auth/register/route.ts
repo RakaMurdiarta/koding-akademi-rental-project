@@ -18,6 +18,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
 
     const body = await req.json();
 
+    
     const { customer_type, email, fname, lname, password, phone } =
       await validator.validate(RegisterSchema, body);
 
