@@ -1,6 +1,6 @@
 import { Customer } from "@prisma/client";
-import CustomerRepository from "../../repository/impl/customer_repository_impl";
-import { ICustomerService } from "../customer_services";
+import CustomerRepository from "../../repository/impl/customer_impl";
+import { ICustomerService } from "../iserviceCustomer";
 import { ApiError } from "../../exception/baseError";
 import { HttpStatusCode } from "axios";
 
@@ -17,6 +17,7 @@ class CustomerService implements ICustomerService {
     lname: string,
     phone: string,
     type: string,
+    isOwner: boolean,
     cname?: string,
     intial?: string
   ): Promise<Customer> => {
@@ -28,6 +29,7 @@ class CustomerService implements ICustomerService {
         lname,
         phone,
         type,
+        isOwner,
         cname,
         intial
       );
@@ -41,7 +43,7 @@ class CustomerService implements ICustomerService {
         return customer;
       }
     } catch (error: any) {
-      throw error
+      throw error;
     }
   };
 }

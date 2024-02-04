@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const RegisterSchema = z.object({
+export const RegisterCustomer = z.object({
   email: z
     .string({ required_error: "email is required" })
     .email({ message: "Email is not valid" }),
@@ -12,3 +12,18 @@ export const RegisterSchema = z.object({
   customer_type: z.string({ required_error: "customer_type is required" }),
   phone: z.string({ required_error: "phone is required" }),
 });
+
+export const AdminRegister = z.object({
+  username: z.string({ required_error: "email is required" }),
+  password: z
+    .string({ required_error: "password is required" })
+    .min(8, { message: "Password must be at least 8 characters long" }),
+});
+
+// export const AdminRegister = z.object({
+//   username: z.string({ required_error: "email is required" }),
+//   password: z
+//     .string({ required_error: "password is required" })
+//     .min(8, { message: "Password must be at least 8 characters long" }),
+// });
+

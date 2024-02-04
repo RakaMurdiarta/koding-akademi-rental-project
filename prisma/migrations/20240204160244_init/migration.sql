@@ -6,7 +6,9 @@ CREATE TABLE `Owner` (
     `bname` VARCHAR(191) NULL,
     `fname` VARCHAR(191) NOT NULL,
     `lname` VARCHAR(191) NOT NULL,
+    `customer_id` VARCHAR(191) NOT NULL,
 
+    UNIQUE INDEX `Owner_customer_id_key`(`customer_id`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -15,7 +17,7 @@ CREATE TABLE `Vehicle` (
     `id` VARCHAR(191) NOT NULL,
     `model` VARCHAR(191) NOT NULL,
     `year` INTEGER NOT NULL,
-    `idnumber` INTEGER NOT NULL,
+    `idnumber` VARCHAR(191) NOT NULL,
     `owner_id` VARCHAR(191) NOT NULL,
     `vehicle_type_id` VARCHAR(191) NOT NULL,
 
@@ -55,6 +57,7 @@ CREATE TABLE `Customer` (
     `fname` VARCHAR(191) NOT NULL,
     `lname` VARCHAR(191) NULL,
     `cname` VARCHAR(191) NULL,
+    `is_owner` BOOLEAN NOT NULL,
 
     UNIQUE INDEX `Customer_email_key`(`email`),
     PRIMARY KEY (`id`)
@@ -93,6 +96,9 @@ CREATE TABLE `ReturnHistory` (
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- AddForeignKey
+ALTER TABLE `Owner` ADD CONSTRAINT `Owner_customer_id_fkey` FOREIGN KEY (`customer_id`) REFERENCES `Customer`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `Vehicle` ADD CONSTRAINT `Vehicle_owner_id_fkey` FOREIGN KEY (`owner_id`) REFERENCES `Owner`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;

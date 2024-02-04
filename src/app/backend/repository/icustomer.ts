@@ -8,6 +8,7 @@ export interface ICustomer {
     lname: string,
     phone: string,
     type: string,
+    isOwner: boolean,
     cname?: string,
     intial?: string
   ): Promise<Customer | null>;

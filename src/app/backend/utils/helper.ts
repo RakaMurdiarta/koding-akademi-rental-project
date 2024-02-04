@@ -53,17 +53,21 @@ export function handleError(error: any) {
     message = error.message;
   }
 
-  return NextResponse.json(ApiResponse.error(null, error.message ,status), { status: status });
+  return NextResponse.json(ApiResponse.error(null, error.message, status), {
+    status: status,
+  });
 }
 
 //this is for coresponding helper api response
 export class ResponseHandler<T> {
   public success(data: T, message = "success", statusCode = 200) {
-    return NextResponse.json(ApiResponse.success(data), { status: 200 });
+    return NextResponse.json(ApiResponse.success(data, message, statusCode), {
+      status: statusCode,
+    });
   }
 
   public error(message: string, statusCode = 500) {
-    return NextResponse.json(ApiResponse.error(null, "error"), {
+    return NextResponse.json(ApiResponse.error(null, "error", statusCode), {
       status: statusCode,
     });
   }
