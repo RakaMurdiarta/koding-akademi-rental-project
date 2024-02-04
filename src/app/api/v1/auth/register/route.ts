@@ -10,10 +10,7 @@ import { RegisterSchema } from "@/app/backend/utils/validator/schema";
 import { Customer } from "@prisma/client";
 import { HttpStatusCode } from "axios";
 import { NextRequest, NextResponse } from "next/server";
-export async function POST(
-  req: NextRequest,
-  res: NextResponse<ApiResponse<Customer>>
-) {
+export async function POST(req: NextRequest, res: NextResponse) {
   try {
     if (req.method !== "POST") {
       throw new ApiError("invalid request method", HttpStatusCode.BadRequest);
@@ -24,7 +21,7 @@ export async function POST(
     const { customer_type, email, fname, lname, password, phone } =
       await validator.validate(RegisterSchema, body);
 
-    const customer = await customerService.addCustomer(
+    const customer: Customer = await customerService.addCustomer(
       email,
       password,
       fname,

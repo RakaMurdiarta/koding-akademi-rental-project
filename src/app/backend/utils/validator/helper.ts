@@ -38,7 +38,7 @@ class RequestValidation {
       }
       throw new ApiError(
         "INTERNAL SERVER ERROR",
-        HttpStatusCode.BadRequest
+        HttpStatusCode.InternalServerError
       );
     }
   };
