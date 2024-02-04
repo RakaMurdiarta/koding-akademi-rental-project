@@ -9,3 +9,87 @@ datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
 }
+
+model Owner {
+  id         String    @id @default(uuid()) @map("id")
+  Owner_type String    @map("owner_type")
+  Cname      String?   @map("cname")
+  Bname      String?   @map("bname")
+  Fname      String    @map("fname")
+  Lname      String    @map("lname")
+  Vehicles   Vehicle[]
+}
+
+model Vehicle {
+  id             String          @id @default(uuid()) @map("id")
+  Model          String          @map("model")
+  Year           Int             @map("year")
+  IdentityNumber Int             @map("idnumber")
+  Owner_id       String          @map("owner_id")
+  Owner          Owner           @relation(fields: [Owner_id], references: [id])
+  avalaibility   Availability?
+  vehicleTypeId  String          @map("vehicle_type_id")
+  vehicleType    VehicleType     @relation(fields: [vehicleTypeId], references: [id])
+  Rent           Rents[]
+  returnhistory  ReturnHistory[]
+}
+
+model VehicleType {
+  id          String    @id @default(uuid()) @map("id")
+  Weekly_rate Float     @map("Weekly_rate")
+  Daily_rate  Float     @map("Daily_rate")
+  type        String    @map("Car_type")
+  vehicle     Vehicle[]
+}
+
+model Availability {
+  id              String    @id @default(uuid()) @map("id")
+  Available_start DateTime? @map("available_start")
+  Available_end   DateTime? @map("available_end")
+  IsAvalaible     Boolean   @map("is_avalaible")
+  VehicleId       String    @unique @map("vehicle_id")
+  Vehicle         Vehicle   @relation(fields: [VehicleId], references: [id])
+}
+
+model Customer {
+  id            String          @id @default(uuid()) @map("id")
+  Phone         String          @map("phone")
+  Email         String          @unique @map("email")
+  Password      String          @map("password")
+  Customer_type String          @map("customer_type")
+  Initial       String?         @map("initial")
+  Fname         String          @map("fname")
+  Lname         String?         @map("lname")
+  Cname         String?         @map("cname")
+  Rent          Rents[]
+  returnhistory ReturnHistory[]
+}
+
+model Rents {
+  id          Int       @id @map("id")
+  Customer_id String    @map("customer_id")
+  Vehicle_id  String    @map("vehicle_id")
+  Start_date  DateTime? @map("start_date")
+  Return_date DateTime? @map("return_date")
+  Amount_due  Float     @map("Amount_due")
+  Noofdays    Int       @map("Noofdays")
+  Active      Boolean   @map("Active")
+  Customer    Customer  @relation(fields: [Customer_id], references: [id])
+  Vehicle     Vehicle   @relation(fields: [Vehicle_id], references: [id])
+}
+
+model Admin {
+  id       String @id @default(uuid()) @map("id")
+  username String @map("usernmae")
+  password String @map("password")
+}
+
+model ReturnHistory {
+  id          String   @id @default(uuid()) @map("id")
+  customer_id String   @map("customer_id")
+  vehicle_id  String   @map("vehicle_id")
+  Return_date DateTime @map("return_date")
+  IsLate      Boolean  @map("is_late")
+  Customer    Customer @relation(fields: [customer_id], references: [id])
+  Vehicle     Vehicle  @relation(fields: [vehicle_id], references: [id])
+}

@@ -1,6 +1,6 @@
 import { HttpStatusCode } from "axios";
 
-class BaseError extends Error {
+export class BaseError extends Error {
   public statusCode: HttpStatusCode;
   constructor(message: string, statusCode: HttpStatusCode) {
     super(message);
