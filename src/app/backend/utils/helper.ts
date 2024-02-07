@@ -1,7 +1,9 @@
 import { HttpStatusCode } from "axios";
-import { BaseError } from "../exception/baseError";
-import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
-import { NextResponse } from "next/server";
+import { ApiError, BaseError } from "../exception/baseError";
+import { NextResponse, NextRequest } from "next/server";
+import { compare, hash, genSalt } from "bcrypt";
+import { Payload } from "@/app/backend/interfaces/jwt";
+import { sign, verify } from "jsonwebtoken";
 
 export class ApiResponse<T> {
   readonly data: T | null;
@@ -71,4 +73,80 @@ export class ResponseHandler<T> {
       status: statusCode,
     });
   }
+}
+
+//bcrypt
+export class Bcrypt {
+  public static async createHashPassword(
+    plainPassword: string
+  ): Promise<string> {
+    const salt = await genSalt(12);
+
+    const hashPass = await hash(plainPassword, salt);
+
+    return hashPass;
+  }
+
+  public static async comparePassword(
+    plainPassword: string,
+    currentHash: string
+  ): Promise<boolean> {
+    const isMatch = await compare(plainPassword, currentHash);
+
+    return isMatch;
+  }
+}
+
+//jsonwebtoken
+
+export class JWT {
+  public static async generateJWT(payload: Payload): Promise<string> {
+    const token = sign(payload, process.env.JWTSECRET as string, {
+      expiresIn: process.env.EXPIRED,
+    });
+
+    return token;
+  }
+
+  public static async decodeJWT(
+    token: string,
+    secret: string
+  ): Promise<Payload> {
+    const decode = verify(token, secret);
+
+    return decode as Payload;
+  }
+}
+
+export const MiddlewareAuthorization = async (
+  req: NextRequest
+): Promise<string | Payload> => {
+  //get Bearer token
+  try {
+    const isAuthToken = req.headers.get("Authorization")?.split(" ")[1];
+
+    if (!isAuthToken) {
+      throw new ApiError("unauthorization", HttpStatusCode.Unauthorized);
+    }
+
+    //decode token jwt
+    const token = await JWT.decodeJWT(
+      isAuthToken,
+      process.env.JWTSECRET as string
+    );
+
+    return token;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export function calculateNumberOfDays(date1: Date, date2: Date): number {
+  // Calculate the difference in milliseconds
+  const differenceMs = date2.getTime() - date1.getTime();
+  
+  // Convert milliseconds to days
+  const numberOfDays = Math.floor(differenceMs / (1000 * 60 * 60 * 24));
+  
+  return numberOfDays;
 }

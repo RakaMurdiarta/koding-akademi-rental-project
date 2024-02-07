@@ -3,12 +3,12 @@ import { customerService } from "@/app/backend/services/impl/customer_service_im
 import {
   ApiResponse,
   Bcrypt,
+  JWT,
   ResponseHandler,
   handleError,
 } from "@/app/backend/utils/helper";
 import { validator } from "@/app/backend/utils/validator/helper";
-import { RegisterCustomer } from "@/app/backend/utils/validator/schema";
-import { Customer } from "@prisma/client";
+import { LoginCustomerSchema } from "@/app/backend/utils/validator/schema";
 import { HttpStatusCode } from "axios";
 import { NextRequest, NextResponse } from "next/server";
 export async function POST(req: NextRequest, res: NextResponse) {
@@ -19,32 +19,33 @@ export async function POST(req: NextRequest, res: NextResponse) {
 
     const body = await req.json();
 
-    const { customer_type, email, fname, lname, password, phone } =
-      await validator.validate(RegisterCustomer, body);
+    const { email, password } = await validator.validate(
+      LoginCustomerSchema,
+      body
+    );
 
     //get customer
     const customerisExist = await customerService.getCustomerByEmail(email);
 
-    //hash password
-
-    const hashpass = await Bcrypt.createHashPassword(password);
-
-    if (customerisExist) {
-      throw new ApiError("email was taken", HttpStatusCode.BadRequest);
+    if (!customerisExist) {
+      throw new ApiError(
+        "email is not register yet",
+        HttpStatusCode.BadRequest
+      );
     }
-
-    const customer: Customer = await customerService.addCustomer(
-      email,
-      hashpass,
-      fname,
-      lname,
-      phone,
-      customer_type
+    
+    const isMatch = await Bcrypt.comparePassword(
+      password,
+      customerisExist.password
     );
 
-    const { password: ignorePassword, ...rest } = customer;
+    if (!isMatch) {
+      throw new ApiError("wrong email or password");
+    }
 
-    return new ResponseHandler().success(rest, undefined, HttpStatusCode.Ok);
+    //generate jwt token
+    const token = await JWT.generateJWT({ id : customerisExist.id,email });
+    return new ResponseHandler().success(token, undefined, HttpStatusCode.Ok);
   } catch (error: any) {
     return handleError(error);
   }

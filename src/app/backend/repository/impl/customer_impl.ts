@@ -1,4 +1,4 @@
-import { Customer, PrismaClient } from "@prisma/client";
+import { Customer, CustomerType, PrismaClient } from "@prisma/client";
 import { ICustomer } from "../icustomer";
 import prisma from "@/app/backend/config/prismaSingleton";
 import { ApiError } from "../../exception/baseError";
@@ -16,8 +16,7 @@ class CustomerRepository implements ICustomer {
     fname: string,
     lname: string,
     phone: string,
-    type: string,
-    isOwner: boolean,
+    type: CustomerType,
     cname?: string,
     initial?: string
   ): Promise<Customer | null> {
@@ -31,17 +30,43 @@ class CustomerRepository implements ICustomer {
         initial,
         cname,
         fname,
-        isOwner,
       },
     });
 
     if (!customer) {
       throw new ApiError("failed to create customer");
-      return null;
     } else {
       return customer;
     }
   }
+
+  getCustomerByEmail = async (email:string) : Promise<Customer | null> => {
+      const customer = await this.repository.customer.findFirst({
+        where : {
+          email
+        }
+      })
+
+      if(!customer){
+        return null
+      }
+
+      return customer
+  }
+
+  getCustomerById = async (custId:string) : Promise<Customer | null> => {
+    const customer = await this.repository.customer.findFirst({
+      where : {
+        id : custId
+      }
+    })
+
+    if(!customer){
+      return null
+    }
+
+    return customer
+}
 }
 
 export default CustomerRepository;

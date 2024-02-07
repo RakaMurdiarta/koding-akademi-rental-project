@@ -1,4 +1,4 @@
-import { Customer } from "@prisma/client";
+import { Customer, CustomerType, Vehicle } from "@prisma/client";
 
 export interface ICustomerService {
   addCustomer(
@@ -7,9 +7,11 @@ export interface ICustomerService {
     fname: string,
     lname: string,
     phone: string,
-    type: string,
-    isOwner: boolean,
+    type?: CustomerType,
     cname?: string,
     intial?: string
   ): Promise<Customer>;
+
+  postVehicle(vehicle: Vehicle , customer_id : string): Promise<Vehicle>;
+  getCustomerByEmail(email: string) : Promise<Customer | null>
 }

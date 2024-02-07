@@ -17,26 +17,22 @@ import { Admin } from "@prisma/client";
 import { Payload } from "@/app/backend/interfaces/jwt";
 import { HttpStatusCode } from "axios";
 import { NextRequest, NextResponse } from "next/server";
-export async function POST(req: NextRequest, res: NextResponse) {
+import { newVehicleServices } from "@/app/backend/services/impl/vehicle_services_impl";
+export async function GET(req: NextRequest, res: NextResponse) {
   try {
-    if (req.method !== "POST") {
+    if (req.method !== "GET") {
       throw new ApiError(
         "invalid request method",
         HttpStatusCode.MethodNotAllowed
       );
     }
-
-    // const validBody = await validator.validate(AdminRegister, body);
-
-    const {id : customerId} = await MiddlewareAuthorization(req) as Payload
-    console.log(customerId)
      
-    const owner = await ownerservice.addOwner({customerId});
+    const vehicles = await newVehicleServices.getListvehicles();
 
     return new ResponseHandler().success(
-      owner,
+      vehicles,
       undefined,
-      HttpStatusCode.Created
+      HttpStatusCode.Ok
     );
   } catch (error: any) {
     return handleError(error);

@@ -10,21 +10,9 @@ export class OwnerRepository implements IOwner {
     this.repository = prisma;
   }
 
-  insert = async (
-    type: string,
-    lname: string,
-    fname: string,
-    customerId: string,
-    cname?: string | undefined,
-    bname?: string | undefined
-  ): Promise<Owner | null> => {
+  insert = async (customerId: string): Promise<Owner | null> => {
     const owner = await this.repository.owner.create({
       data: {
-        fname,
-        lname,
-        ownerType: type,
-        cname,
-        bname,
         customerId,
       },
     });
@@ -34,5 +22,17 @@ export class OwnerRepository implements IOwner {
     }
 
     return owner;
+  };
+
+  getOwnerByCustomerId = async (customerId: string): Promise<Owner | null> => {
+    const owner = await this.repository.owner.findFirst({
+      where: { customer: { id: customerId } },
+    });
+
+    if(!owner){
+      return null
+    }
+
+    return owner
   };
 }

@@ -1,11 +1,6 @@
 -- CreateTable
 CREATE TABLE `Owner` (
     `id` VARCHAR(191) NOT NULL,
-    `owner_type` VARCHAR(191) NOT NULL,
-    `cname` VARCHAR(191) NULL,
-    `bname` VARCHAR(191) NULL,
-    `fname` VARCHAR(191) NOT NULL,
-    `lname` VARCHAR(191) NOT NULL,
     `customer_id` VARCHAR(191) NOT NULL,
 
     UNIQUE INDEX `Owner_customer_id_key`(`customer_id`),
@@ -19,17 +14,9 @@ CREATE TABLE `Vehicle` (
     `year` INTEGER NOT NULL,
     `idnumber` VARCHAR(191) NOT NULL,
     `owner_id` VARCHAR(191) NOT NULL,
-    `vehicle_type_id` VARCHAR(191) NOT NULL,
-
-    PRIMARY KEY (`id`)
-) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-
--- CreateTable
-CREATE TABLE `VehicleType` (
-    `id` VARCHAR(191) NOT NULL,
-    `Weekly_rate` DOUBLE NOT NULL,
-    `Daily_rate` DOUBLE NOT NULL,
-    `Car_type` VARCHAR(191) NOT NULL,
+    `weekly_rate` DOUBLE NOT NULL,
+    `daily_rate` DOUBLE NOT NULL,
+    `type` ENUM('motor', 'mobil') NOT NULL,
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -37,8 +24,7 @@ CREATE TABLE `VehicleType` (
 -- CreateTable
 CREATE TABLE `Availability` (
     `id` VARCHAR(191) NOT NULL,
-    `available_start` DATETIME(3) NULL,
-    `available_end` DATETIME(3) NULL,
+    `available_date` DATETIME(3) NULL,
     `is_avalaible` BOOLEAN NOT NULL,
     `vehicle_id` VARCHAR(191) NOT NULL,
 
@@ -52,12 +38,11 @@ CREATE TABLE `Customer` (
     `phone` VARCHAR(191) NOT NULL,
     `email` VARCHAR(191) NOT NULL,
     `password` VARCHAR(191) NOT NULL,
-    `customer_type` VARCHAR(191) NOT NULL,
+    `customerType` ENUM('individu', 'company') NULL DEFAULT 'individu',
     `initial` VARCHAR(191) NULL,
     `fname` VARCHAR(191) NOT NULL,
-    `lname` VARCHAR(191) NULL,
+    `lname` VARCHAR(191) NOT NULL,
     `cname` VARCHAR(191) NULL,
-    `is_owner` BOOLEAN NOT NULL,
 
     UNIQUE INDEX `Customer_email_key`(`email`),
     PRIMARY KEY (`id`)
@@ -65,14 +50,14 @@ CREATE TABLE `Customer` (
 
 -- CreateTable
 CREATE TABLE `Rents` (
-    `id` INTEGER NOT NULL,
+    `id` VARCHAR(191) NOT NULL,
     `customer_id` VARCHAR(191) NOT NULL,
     `vehicle_id` VARCHAR(191) NOT NULL,
     `start_date` DATETIME(3) NULL,
     `return_date` DATETIME(3) NULL,
-    `Amount_due` DOUBLE NOT NULL,
-    `Noofdays` INTEGER NOT NULL,
-    `Active` BOOLEAN NOT NULL,
+    `amount_due` DOUBLE NOT NULL,
+    `no_of_days` INTEGER NOT NULL,
+    `active` BOOLEAN NOT NULL DEFAULT true,
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -92,7 +77,7 @@ CREATE TABLE `ReturnHistory` (
     `customer_id` VARCHAR(191) NOT NULL,
     `vehicle_id` VARCHAR(191) NOT NULL,
     `return_date` DATETIME(3) NOT NULL,
-    `is_late` BOOLEAN NOT NULL,
+    `is_late` BOOLEAN NOT NULL DEFAULT false,
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -102,9 +87,6 @@ ALTER TABLE `Owner` ADD CONSTRAINT `Owner_customer_id_fkey` FOREIGN KEY (`custom
 
 -- AddForeignKey
 ALTER TABLE `Vehicle` ADD CONSTRAINT `Vehicle_owner_id_fkey` FOREIGN KEY (`owner_id`) REFERENCES `Owner`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE `Vehicle` ADD CONSTRAINT `Vehicle_vehicle_type_id_fkey` FOREIGN KEY (`vehicle_type_id`) REFERENCES `VehicleType`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `Availability` ADD CONSTRAINT `Availability_vehicle_id_fkey` FOREIGN KEY (`vehicle_id`) REFERENCES `Vehicle`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;

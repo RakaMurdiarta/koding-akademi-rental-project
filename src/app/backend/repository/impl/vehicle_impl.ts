@@ -1,6 +1,4 @@
 import { PrismaClient, Vehicle } from "@prisma/client";
-import { IOwner } from "../iowner";
-import { Owner } from "@prisma/client";
 import prisma from "@/app/backend/config/prismaSingleton";
 import { IVehicle } from "../ivehicle";
 
@@ -11,7 +9,9 @@ export class VehcileRepository implements IVehicle {
     this.repository = prisma;
   }
 
-  addVehicle = async (vehicle: Vehicle): Promise<Vehicle | null> => {
+  addVehicle = async (
+    vehicle: Omit<Vehicle, "id">
+  ): Promise<Vehicle | null> => {
     const owner = await this.repository.vehicle.create({
       data: vehicle,
     });
@@ -21,5 +21,29 @@ export class VehcileRepository implements IVehicle {
     }
 
     return owner;
+  };
+
+  getVehicleById = async (vId: string): Promise<Vehicle | null> => {
+    const vehicle = await this.repository.vehicle.findFirst({
+      where: {
+        id: vId,
+      },
+    });
+
+    if (!vehicle) {
+      return null;
+    }
+
+    return vehicle;
+  };
+
+  getListVehicles = async (): Promise<Vehicle[] | null> => {
+    const vehicle = await this.repository.vehicle.findMany();
+
+    if (!vehicle) {
+      return null;
+    }
+
+    return vehicle;
   };
 }

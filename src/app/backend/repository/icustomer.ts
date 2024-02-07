@@ -1,4 +1,4 @@
-import { Customer } from "@prisma/client";
+import { Customer, CustomerType } from "@prisma/client";
 
 export interface ICustomer {
   insert(
@@ -7,10 +7,10 @@ export interface ICustomer {
     fname: string,
     lname: string,
     phone: string,
-    type: string,
-    isOwner: boolean,
+    type: CustomerType,
     cname?: string,
     intial?: string
   ): Promise<Customer | null>;
   // update(user_id: string): Promise<void>;
+  getCustomerByEmail(email:string) : Promise<Customer | null> 
 }

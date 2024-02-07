@@ -12,74 +12,70 @@ datasource db {
 
 model Owner {
   id         String    @id @default(uuid()) @map("id")
-  ownerType   String   @map("owner_type")
-  cname      String?   @map("cname")
-  bname      String?   @map("bname")
-  fname      String    @map("fname")
-  lname      String    @map("lname")
   vehicles   Vehicle[]
   customerId String    @unique @map("customer_id")
   customer   Customer  @relation(fields: [customerId], references: [id])
 }
 
-model Vehicle {
-  id             String          @id @default(uuid()) @map("id")
-  model          String          @map("model")
-  year           Int             @map("year")
-  identityNumber String          @map("idnumber")
-  ownerId        String          @map("owner_id")
-  owner          Owner           @relation(fields: [ownerId], references: [id])
-  availability   Availability?
-  vehicleTypeId  String          @map("vehicle_type_id")
-  vehicleType    VehicleType     @relation(fields: [vehicleTypeId], references: [id])
-  rent           Rents[]
-  returnHistory  ReturnHistory[]
+enum TypeVehicle {
+  motor
+  mobil
 }
 
-model VehicleType {
-  id          String    @id @default(uuid()) @map("id")
-  weeklyRate   Float    @map("Weekly_rate")
-  dailyRate    Float    @map("Daily_rate")
-  type        String    @map("Car_type")
-  vehicles    Vehicle[]
+enum CustomerType {
+  individu
+  company
+}
+
+model Vehicle {
+  id              String          @id @default(uuid()) @map("id")
+  model           String          @map("model")
+  year            Int             @map("year")
+  identityNumber  String          @map("idnumber")
+  ownerId         String          @map("owner_id")
+  owner           Owner           @relation(fields: [ownerId], references: [id])
+  weeklyRate      Float           @map("weekly_rate")
+  dailyRate       Float           @map("daily_rate")
+  type            TypeVehicle     @map("type")
+  availability    Availability?
+  rents           Rents[]
+  returnHistories ReturnHistory[]
 }
 
 model Availability {
-  id              String    @id @default(uuid()) @map("id")
-  availableStart DateTime? @map("available_start")
-  availableEnd   DateTime? @map("available_end")
-  isAvailable    Boolean   @map("is_avalaible")
-  vehicleId       String    @unique @map("vehicle_id")
-  vehicle         Vehicle   @relation(fields: [vehicleId], references: [id])
+  id            String    @id @default(uuid()) @map("id")
+  availableDate DateTime? @map("available_date")
+  isAvailable   Boolean   @map("is_avalaible")
+  vehicleId     String    @unique @map("vehicle_id")
+  vehicle       Vehicle   @relation(fields: [vehicleId], references: [id])
 }
 
 model Customer {
-  id            String          @id @default(uuid()) @map("id")
-  phone         String          @map("phone")
-  email         String          @unique @map("email")
-  password      String          @map("password")
-  customerType  String          @map("customer_type")
-  initial       String?         @map("initial")
-  fname         String          @map("fname")
-  lname         String?         @map("lname")
-  cname         String?         @map("cname")
-  rent          Rents[]
-  returnHistory ReturnHistory[]
-  isOwner       Boolean         @map("is_owner")
-  owner         Owner?
+  id              String          @id @default(uuid()) @map("id")
+  phone           String          @map("phone")
+  email           String          @unique @map("email")
+  password        String          @map("password")
+  customerType    CustomerType?   @default(individu)
+  initial         String?         @map("initial")
+  fname           String          @map("fname")
+  lname           String          @map("lname")
+  cname           String?         @map("cname")
+  owner           Owner?
+  rents           Rents[]
+  returnHistories ReturnHistory[]
 }
 
 model Rents {
-  id          Int       @id @map("id")
+  id         String    @id @default(uuid()) @map("id")
   customerId String    @map("customer_id")
-  vehicleId   String    @map("vehicle_id")
-  startDate   DateTime? @map("start_date")
-  returnDate  DateTime? @map("return_date")
-  amountDue   Float     @map("Amount_due")
-  noOfDays    Int       @map("Noofdays")
-  active      Boolean   @map("Active")
-  customer    Customer  @relation(fields: [customerId], references: [id])
-  vehicle     Vehicle   @relation(fields: [vehicleId], references: [id])
+  vehicleId  String    @map("vehicle_id")
+  startDate  DateTime? @map("start_date")
+  returnDate DateTime? @map("return_date")
+  amountDue  Float     @map("amount_due")
+  noOfDays   Int       @map("no_of_days")
+  active     Boolean   @default(true) @map("active")
+  customer   Customer  @relation(fields: [customerId], references: [id])
+  vehicle    Vehicle   @relation(fields: [vehicleId], references: [id])
 }
 
 model Admin {
@@ -89,12 +85,11 @@ model Admin {
 }
 
 model ReturnHistory {
-  id          String   @id @default(uuid()) @map("id")
+  id         String   @id @default(uuid()) @map("id")
   customerId String   @map("customer_id")
-  vehicleId   String   @map("vehicle_id")
-  returnDate  DateTime @map("return_date")
-  isLate      Boolean  @map("is_late")
-  customer    Customer @relation(fields: [customerId], references: [id])
-  vehicle     Vehicle  @relation(fields: [vehicleId], references: [id])
+  vehicleId  String   @map("vehicle_id")
+  returnDate DateTime @map("return_date")
+  isLate     Boolean  @default(false) @map("is_late")
+  customer   Customer @relation(fields: [customerId], references: [id])
+  vehicle    Vehicle  @relation(fields: [vehicleId], references: [id])
 }
-
