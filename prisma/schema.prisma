@@ -17,11 +17,6 @@ model Owner {
   customer   Customer  @relation(fields: [customerId], references: [id])
 }
 
-enum TypeVehicle {
-  motor
-  mobil
-}
-
 enum CustomerType {
   individu
   company
@@ -34,9 +29,9 @@ model Vehicle {
   identityNumber  String          @map("idnumber")
   ownerId         String          @map("owner_id")
   owner           Owner           @relation(fields: [ownerId], references: [id])
-  weeklyRate      Float           @map("weekly_rate")
-  dailyRate       Float           @map("daily_rate")
-  type            TypeVehicle     @map("type")
+  price           Float
+  type            String          @map("type")
+  iamgeUrl        String          @map("imageUrl")
   availability    Availability?
   rents           Rents[]
   returnHistories ReturnHistory[]
