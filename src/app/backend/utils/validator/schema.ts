@@ -1,4 +1,4 @@
-import { CustomerType, TypeVehicle } from "@prisma/client";
+import { CustomerType } from "@prisma/client";
 import { z } from "zod";
 
 export const RegisterCustomer = z.object({
@@ -27,16 +27,18 @@ export const AddVehicle = z.object({
   model: z.string({ required_error: "email is required" }),
   year: z.number({ required_error: "password is required" }),
   identityNumber: z.string({ required_error: "password is required" }),
-  weeklyRate: z.number({ required_error: "password is required" }),
-  type: z.enum([TypeVehicle.mobil, TypeVehicle.motor], {
-    required_error: "it should be on of this individu or company",
-  }),
-  dailyRate: z.number({ required_error: "password is required" }),
+  type: z.string({ required_error: "type is required" }),
+  price: z.number({ required_error: "price is required" }),
+  imageUrl: z.string({ required_error: "imageUrl is required" }),
 });
 
 export const LoginCustomerSchema = z.object({
   email: z.string({ required_error: "email is required" }),
   password: z.string({ required_error: "password is required" }),
+});
+
+export const IDSchema = z.object({
+  customerid: z.string({ required_error: "ne error is required" }),
 });
 
 export const Rent = z.object({

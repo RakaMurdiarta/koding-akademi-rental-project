@@ -86,6 +86,19 @@ class CustomerService implements ICustomerService {
 
     return customer
   }
+
+  createRequestOwner = async (customerId: string): Promise<string> => {
+      const request = await this.customerRepository.requestOwner(customerId)
+
+      if(!request){
+        throw new ApiError("failed request owner")
+      }
+
+      return request
+  }
+  isOwner = async (customerId: string): Promise<boolean> => {
+      return await this.customerRepository.isOwner(customerId)
+  }
 }
 
 export const customerService = new CustomerService();

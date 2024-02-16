@@ -8,15 +8,25 @@ CREATE TABLE `Owner` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
+CREATE TABLE `OwnerRequestHistory` (
+    `id` VARCHAR(191) NOT NULL,
+    `customer_id` VARCHAR(191) NOT NULL,
+    `status` ENUM('requested', 'accepted') NOT NULL,
+
+    UNIQUE INDEX `OwnerRequestHistory_customer_id_key`(`customer_id`),
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
 CREATE TABLE `Vehicle` (
     `id` VARCHAR(191) NOT NULL,
     `model` VARCHAR(191) NOT NULL,
     `year` INTEGER NOT NULL,
     `idnumber` VARCHAR(191) NOT NULL,
     `owner_id` VARCHAR(191) NOT NULL,
-    `weekly_rate` DOUBLE NOT NULL,
-    `daily_rate` DOUBLE NOT NULL,
-    `type` ENUM('motor', 'mobil') NOT NULL,
+    `price` DOUBLE NOT NULL,
+    `type` VARCHAR(191) NOT NULL,
+    `imageUrl` VARCHAR(191) NOT NULL,
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -39,7 +49,6 @@ CREATE TABLE `Customer` (
     `email` VARCHAR(191) NOT NULL,
     `password` VARCHAR(191) NOT NULL,
     `customerType` ENUM('individu', 'company') NULL DEFAULT 'individu',
-    `initial` VARCHAR(191) NULL,
     `fname` VARCHAR(191) NOT NULL,
     `lname` VARCHAR(191) NOT NULL,
     `cname` VARCHAR(191) NULL,
@@ -84,6 +93,9 @@ CREATE TABLE `ReturnHistory` (
 
 -- AddForeignKey
 ALTER TABLE `Owner` ADD CONSTRAINT `Owner_customer_id_fkey` FOREIGN KEY (`customer_id`) REFERENCES `Customer`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `OwnerRequestHistory` ADD CONSTRAINT `OwnerRequestHistory_customer_id_fkey` FOREIGN KEY (`customer_id`) REFERENCES `Customer`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `Vehicle` ADD CONSTRAINT `Vehicle_owner_id_fkey` FOREIGN KEY (`owner_id`) REFERENCES `Owner`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;

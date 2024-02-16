@@ -45,8 +45,8 @@ const Page = async () => {
                   model={vehicle.model}
                   year={vehicle.year}
                   identityNumber={vehicle.identityNumber}
-                  weeklyRate={vehicle.weeklyRate}
-                  dailyRate={vehicle.dailyRate}
+                  weeklyRate={vehicle.price}
+                  dailyRate={vehicle.price}
                   type={vehicle.type}
                   imageUrl="https://images.pexels.com/photos/170811/pexels-photo-170811.jpeg?auto=compress&cs=tinysrgb&w=800"
                 />

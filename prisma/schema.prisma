@@ -10,11 +10,23 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum StatusRequestOwner{
+  requested
+  accepted
+}
+// assignment to add table admin to manage request owner
 model Owner {
   id         String    @id @default(uuid()) @map("id")
   vehicles   Vehicle[]
   customerId String    @unique @map("customer_id")
   customer   Customer  @relation(fields: [customerId], references: [id])
+}
+
+model OwnerRequestHistory {
+  id         String    @id @default(uuid()) @map("id")
+  customerId String    @unique @map("customer_id")
+  customer   Customer  @relation(fields: [customerId], references: [id])
+  status StatusRequestOwner
 }
 
 enum CustomerType {
@@ -31,7 +43,7 @@ model Vehicle {
   owner           Owner           @relation(fields: [ownerId], references: [id])
   price           Float
   type            String          @map("type")
-  iamgeUrl        String          @map("imageUrl")
+  imageUrl        String          @map("imageUrl")
   availability    Availability?
   rents           Rents[]
   returnHistories ReturnHistory[]
@@ -51,13 +63,13 @@ model Customer {
   email           String          @unique @map("email")
   password        String          @map("password")
   customerType    CustomerType?   @default(individu)
-  initial         String?         @map("initial")
   fname           String          @map("fname")
   lname           String          @map("lname")
   cname           String?         @map("cname")
   owner           Owner?
   rents           Rents[]
   returnHistories ReturnHistory[]
+  requestOwner OwnerRequestHistory?
 }
 
 model Rents {

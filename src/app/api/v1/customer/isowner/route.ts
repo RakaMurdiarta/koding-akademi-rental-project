@@ -15,24 +15,18 @@ import {
 import { Customer, CustomerType, Vehicle } from "@prisma/client";
 import { HttpStatusCode } from "axios";
 import { NextRequest, NextResponse } from "next/server";
-export async function POST(req: NextRequest, res: NextResponse) {
+export async function GET(req: NextRequest, res: NextResponse) {
   try {
-    if (req.method !== "POST") {
+    if (req.method !== "GET") {
       throw new ApiError("invalid request method", HttpStatusCode.BadRequest);
     }
 
     const {id} = await MiddlewareAuthorization(req) as Payload
-
-    const body = await req.json();
-
-    console.log({id})
-
-    const bodyReq = await validator.validate(AddVehicle, body);
  
-    const customer = await customerService.postVehicle(bodyReq,id);
+    const isowner = await customerService.isOwner(id);
 
-    return new ResponseHandler().success(
-      customer,
+    return new ResponseHandler<boolean>().success(
+      isowner,
       undefined,
       HttpStatusCode.Ok
     );

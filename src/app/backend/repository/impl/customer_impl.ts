@@ -1,4 +1,9 @@
-import { Customer, CustomerType, PrismaClient } from "@prisma/client";
+import {
+  Customer,
+  CustomerType,
+  PrismaClient,
+  StatusRequestOwner,
+} from "@prisma/client";
 import { ICustomer } from "../icustomer";
 import prisma from "@/app/backend/config/prismaSingleton";
 import { ApiError } from "../../exception/baseError";
@@ -27,7 +32,6 @@ class CustomerRepository implements ICustomer {
         password,
         phone,
         lname,
-        initial,
         cname,
         fname,
       },
@@ -40,33 +44,58 @@ class CustomerRepository implements ICustomer {
     }
   }
 
-  getCustomerByEmail = async (email:string) : Promise<Customer | null> => {
-      const customer = await this.repository.customer.findFirst({
-        where : {
-          email
-        }
-      })
-
-      if(!customer){
-        return null
-      }
-
-      return customer
-  }
-
-  getCustomerById = async (custId:string) : Promise<Customer | null> => {
+  getCustomerByEmail = async (email: string): Promise<Customer | null> => {
     const customer = await this.repository.customer.findFirst({
-      where : {
-        id : custId
-      }
-    })
+      where: {
+        email,
+      },
+    });
 
-    if(!customer){
-      return null
+    if (!customer) {
+      return null;
     }
 
-    return customer
-}
+    return customer;
+  };
+
+  getCustomerById = async (custId: string): Promise<Customer | null> => {
+    const customer = await this.repository.customer.findFirst({
+      where: {
+        id: custId,
+      },
+    });
+
+    if (!customer) {
+      return null;
+    }
+
+    return customer;
+  };
+
+  requestOwner = async (customerId: string): Promise<string | null> => {
+    const requsetOwner = await this.repository.ownerRequestHistory.create({
+      data: {
+        customerId: customerId,
+        status: StatusRequestOwner.requested,
+      },
+    });
+
+    if (!requsetOwner) {
+      return null;
+    }
+    return "request is success. waiting for admin reviewing";
+  };
+  async isOwner(customerId: string): Promise<boolean> {
+      const history = await this.repository.ownerRequestHistory.findFirst({
+        where: {customerId}
+      })
+
+      if(!history){
+        return false
+      }
+
+      return history.status.toLowerCase() === StatusRequestOwner.accepted.toLowerCase()
+  }
 }
 
 export default CustomerRepository;

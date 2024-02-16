@@ -14,4 +14,6 @@ export interface ICustomerService {
 
   postVehicle(vehicle: Vehicle , customer_id : string): Promise<Vehicle>;
   getCustomerByEmail(email: string) : Promise<Customer | null>
+  createRequestOwner(customerId: string) : Promise<string>
+  isOwner(customerId: string) : Promise<boolean> 
 }

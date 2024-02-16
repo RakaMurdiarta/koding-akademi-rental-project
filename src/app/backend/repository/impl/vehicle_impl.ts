@@ -28,6 +28,19 @@ export class VehcileRepository implements IVehicle {
       where: {
         id: vId,
       },
+      include: {
+        owner: {
+          include: {
+            customer: {
+              select: {
+                phone: true,
+                fname: true,
+                lname: true,
+              },
+            },
+          },
+        },
+      },
     });
 
     if (!vehicle) {
@@ -38,12 +51,31 @@ export class VehcileRepository implements IVehicle {
   };
 
   getListVehicles = async (): Promise<Vehicle[] | null> => {
-    const vehicle = await this.repository.vehicle.findMany();
+    try {
+      const vehicles = await this.repository.vehicle.findMany({
+        include: {
+          owner: {
+            include: {
+              customer: {
+                select: {
+                  phone: true,
+                  fname: true,
+                  lname: true,
+                },
+              },
+            },
+          },
+        },
+      });
 
-    if (!vehicle) {
+      if (!vehicles) {
+        return null;
+      }
+
+      return vehicles;
+    } catch (error) {
+      console.error("Error fetching vehicles:", error);
       return null;
     }
-
-    return vehicle;
   };
 }
