@@ -7,7 +7,7 @@ import { Loader2 } from "lucide-react";
 import { Vehicle } from "@prisma/client";
 
 async function getVehicles() {
-  const res = await fetch(`http://localhost:3000/api/v1/vehicle/all`);
+  const res = await fetch(`https://koding-akademi-rental-project-git-dev-rakamurdiarta.vercel.app/api/v1/vehicle/all`);
   return res.json();
 }
 
