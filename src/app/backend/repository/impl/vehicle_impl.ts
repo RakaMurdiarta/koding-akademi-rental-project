@@ -52,21 +52,7 @@ export class VehcileRepository implements IVehicle {
 
   getListVehicles = async (): Promise<Vehicle[] | null> => {
     try {
-      const vehicles = await this.repository.vehicle.findMany({
-        include: {
-          owner: {
-            include: {
-              customer: {
-                select: {
-                  phone: true,
-                  fname: true,
-                  lname: true,
-                },
-              },
-            },
-          },
-        },
-      });
+      const vehicles = await this.repository.vehicle.findMany();
 
       if (!vehicles) {
         return null;
