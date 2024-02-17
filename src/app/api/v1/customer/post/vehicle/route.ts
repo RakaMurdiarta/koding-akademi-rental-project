@@ -28,8 +28,13 @@ export async function POST(req: NextRequest, res: NextResponse) {
     console.log({id})
 
     const bodyReq = await validator.validate(AddVehicle, body);
+
+    const newBody = {
+      ...bodyReq,
+      isAvailable: true
+    }
  
-    const customer = await customerService.postVehicle(bodyReq,id);
+    const customer = await customerService.postVehicle(newBody,id);
 
     return new ResponseHandler().success(
       customer,

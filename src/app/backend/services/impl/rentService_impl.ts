@@ -58,9 +58,9 @@ class RentServices implements IRentServices {
       to: cust.email,
       subject: "invoices",
       details: {
-        name: cust.fname,
+        name: cust.fullname,
         identityNumber: vehi.model,
-        start:from,
+        start: from,
         return: until,
         price: vehi.price,
         status: "success",
