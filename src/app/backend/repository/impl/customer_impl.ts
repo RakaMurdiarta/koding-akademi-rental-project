@@ -18,12 +18,10 @@ class CustomerRepository implements ICustomer {
   async insert(
     email: string,
     password: string,
-    fname: string,
-    lname: string,
+    fullname: string,
     phone: string,
     type: CustomerType,
-    cname?: string,
-    initial?: string
+    cname?: string
   ): Promise<Customer | null> {
     const customer: Customer = await this.repository.customer.create({
       data: {
@@ -31,9 +29,8 @@ class CustomerRepository implements ICustomer {
         customerType: type,
         password,
         phone,
-        lname,
         cname,
-        fname,
+        fullname,
       },
     });
 

@@ -10,10 +10,11 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-enum StatusRequestOwner{
+enum StatusRequestOwner {
   requested
   accepted
 }
+
 // assignment to add table admin to manage request owner
 model Owner {
   id         String    @id @default(uuid()) @map("id")
@@ -23,10 +24,10 @@ model Owner {
 }
 
 model OwnerRequestHistory {
-  id         String    @id @default(uuid()) @map("id")
-  customerId String    @unique @map("customer_id")
-  customer   Customer  @relation(fields: [customerId], references: [id])
-  status StatusRequestOwner
+  id         String             @id @default(uuid()) @map("id")
+  customerId String             @unique @map("customer_id")
+  customer   Customer           @relation(fields: [customerId], references: [id])
+  status     StatusRequestOwner
 }
 
 enum CustomerType {
@@ -44,32 +45,23 @@ model Vehicle {
   price           Float
   type            String          @map("type")
   imageUrl        String          @map("imageUrl")
-  availability    Availability?
+  isAvailable     Boolean         @default(true) @map("is_available")
   rents           Rents[]
   returnHistories ReturnHistory[]
-}
-
-model Availability {
-  id            String    @id @default(uuid()) @map("id")
-  availableDate DateTime? @map("available_date")
-  isAvailable   Boolean   @map("is_avalaible")
-  vehicleId     String    @unique @map("vehicle_id")
-  vehicle       Vehicle   @relation(fields: [vehicleId], references: [id])
 }
 
 model Customer {
-  id              String          @id @default(uuid()) @map("id")
-  phone           String          @map("phone")
-  email           String          @unique @map("email")
-  password        String          @map("password")
-  customerType    CustomerType?   @default(individu)
-  fname           String          @map("fname")
-  lname           String          @map("lname")
-  cname           String?         @map("cname")
+  id              String               @id @default(uuid()) @map("id")
+  phone           String               @map("phone")
+  email           String               @unique @map("email")
+  password        String               @map("password")
+  customerType    CustomerType?        @default(individu)
+  fullname        String               @map("fullname")
+  cname           String?              @map("cname")
   owner           Owner?
   rents           Rents[]
   returnHistories ReturnHistory[]
-  requestOwner OwnerRequestHistory?
+  requestOwner    OwnerRequestHistory?
 }
 
 model Rents {
