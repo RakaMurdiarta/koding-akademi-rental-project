@@ -11,6 +11,8 @@ class EnvConfig {
     const DB_PASSWORD = EnvConfig.getEnv("DB_PASSWORD");
     const DB_NAME = EnvConfig.getEnv("DB_NAME");
     const NODE_ENV = EnvConfig.getEnv("NODE_ENV");
+    const EMAIL = EnvConfig.getEnv("EMAIL");
+    const EMAIL_PASSWORD = EnvConfig.getEnv("EMAIL_PASSWORD");
 
 
     return {
@@ -20,7 +22,9 @@ class EnvConfig {
       DB_USER,
       DB_PASSWORD,
       PORT,
-      NODE_ENV
+      NODE_ENV,
+      EMAIL,
+      EMAIL_PASSWORD,
     };
   }
 

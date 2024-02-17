@@ -6,6 +6,7 @@ import { IRentServices } from "../irentService";
 import { RentRepository } from "../../repository/impl/rent_impl";
 import { Rents } from "@prisma/client";
 import { calculateNumberOfDays } from "../../utils/helper";
+import { DetailsRecipient, Recipient, sendEmail } from "../../mail/mailer";
 
 class RentServices implements IRentServices {
   private readonly customerRepo: CustomerRepository;
@@ -38,7 +39,7 @@ class RentServices implements IRentServices {
     if (!vehi) {
       throw new ApiError("invalid credential", HttpStatusCode.NotFound);
     }
-    console.log(new Date(from))
+    console.log(new Date(from));
     const noOfDays = calculateNumberOfDays(new Date(from), new Date(until));
 
     const data: Omit<Rents, "id"> = {
@@ -53,6 +54,21 @@ class RentServices implements IRentServices {
 
     const rent = await this.rentRepo.insert(data);
 
+    const payloadEmail: Recipient = {
+      to: cust.email,
+      subject: "invoices",
+      details: {
+        name: cust.fname,
+        identityNumber: vehi.model,
+        start:from,
+        return: until,
+        price: vehi.price,
+        status: "success",
+      },
+    };
+
+    await sendEmail(payloadEmail);
+
     if (!rent) {
       throw new ApiError("rent is failed", HttpStatusCode.BadRequest);
     }
@@ -61,4 +77,4 @@ class RentServices implements IRentServices {
   };
 }
 
-export const newRentServices = new RentServices()
+export const newRentServices = new RentServices();
