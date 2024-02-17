@@ -11,4 +11,6 @@ export interface EnvConfigOptions {
   DB_PASSWORD: string;
   PORT: string;
   NODE_ENV: string;
+  EMAIL: string,
+  EMAIL_PASSWORD:string
 }

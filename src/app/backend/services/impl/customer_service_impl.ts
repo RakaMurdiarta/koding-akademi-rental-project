@@ -1,41 +1,44 @@
-import { $Enums, Customer, CustomerType, Vehicle } from "@prisma/client";
+import { $Enums, Customer, CustomerType, Rents, ReturnHistory, Vehicle } from "@prisma/client";
 import CustomerRepository from "../../repository/impl/customer_impl";
 import { ICustomerService } from "../iserviceCustomer";
 import { ApiError } from "../../exception/baseError";
 import { HttpStatusCode } from "axios";
 import { VehcileRepository } from "../../repository/impl/vehicle_impl";
 import { OwnerRepository } from "../../repository/impl/owner_impl";
+import { RentRepository } from "../../repository/impl/rent_impl";
+import { ReturnHistoryRepository } from "../../repository/impl/returnHistory_impl";
+import { NewReturnType } from "../../repository/ireturnHistory";
 
 class CustomerService implements ICustomerService {
   private readonly customerRepository: CustomerRepository;
   private readonly vehicleRepo: VehcileRepository;
   private readonly ownerRepo: OwnerRepository;
+  private readonly rentRepo: RentRepository;
+  private readonly returnRepo: ReturnHistoryRepository;
 
   constructor() {
     this.customerRepository = new CustomerRepository();
     this.vehicleRepo = new VehcileRepository();
     this.ownerRepo = new OwnerRepository();
+    this.rentRepo = new RentRepository();
+    this.returnRepo = new ReturnHistoryRepository();
   }
   addCustomer = async (
     email: string,
     password: string,
-    fname: string,
-    lname: string,
+    fullname: string,
     phone: string,
     type: CustomerType,
-    cname?: string,
-    intial?: string
+    cname?: string
   ): Promise<Customer> => {
     try {
       const customer = await this.customerRepository.insert(
         email,
         password,
-        fname,
-        lname,
+        fullname,
         phone,
         type,
-        cname,
-        intial
+        cname
       );
 
       if (!customer) {
@@ -59,12 +62,15 @@ class CustomerService implements ICustomerService {
     const owner = await this.ownerRepo.getOwnerByCustomerId(customer_id);
 
     if (!owner) {
-      throw new ApiError("You are not yet registered as an owner. Please make sure to contact the administrator to register as an owner.", HttpStatusCode.BadRequest);
+      throw new ApiError(
+        "You are not yet registered as an owner. Please make sure to contact the administrator to register as an owner.",
+        HttpStatusCode.BadRequest
+      );
     }
     const data = {
       ...vehicle,
-      ownerId : owner.id
-    }
+      ownerId: owner.id,
+    };
 
     //post vehicle
     const cvehicle = await this.vehicleRepo.addVehicle(data);
@@ -75,30 +81,51 @@ class CustomerService implements ICustomerService {
     return cvehicle;
   };
 
-  getCustomerByEmail= async (email: string) : Promise<Customer | null> =>{
+  getCustomerByEmail = async (email: string): Promise<Customer | null> => {
+    const customer = await this.customerRepository.getCustomerByEmail(email);
 
-    const customer = await this.customerRepository.getCustomerByEmail(email)
-
-
-    if(!customer){
-      return null
+    if (!customer) {
+      return null;
     }
 
-    return customer
-  }
+    return customer;
+  };
 
   createRequestOwner = async (customerId: string): Promise<string> => {
-      const request = await this.customerRepository.requestOwner(customerId)
+    const request = await this.customerRepository.requestOwner(customerId);
 
-      if(!request){
-        throw new ApiError("failed request owner")
-      }
+    if (!request) {
+      throw new ApiError("failed request owner");
+    }
 
-      return request
-  }
+    return request;
+  };
   isOwner = async (customerId: string): Promise<boolean> => {
-      return await this.customerRepository.isOwner(customerId)
-  }
+    return await this.customerRepository.isOwner(customerId);
+  };
+
+  createReturnHistory = async (rent_id: string): Promise<ReturnHistory> => {
+    const getInfoRent = await this.rentRepo.getRentById(rent_id);
+
+    if (!getInfoRent) {
+      throw new ApiError("failed to get rent details");
+    }
+    const isLate = new Date() > getInfoRent.returnDate!;
+    const data: NewReturnType = {
+      customerId: getInfoRent.customerId,
+      vehicleId: getInfoRent.vehicleId,
+      returnDate: new Date(),
+      isLate,
+    };
+
+    const returnRent = await this.returnRepo.insert(data);
+
+    if(!returnRent){
+        throw new ApiError("failed to create return history")
+    }
+
+    return returnRent
+  };
 }
 
 export const customerService = new CustomerService();

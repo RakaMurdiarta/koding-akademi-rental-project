@@ -8,12 +8,12 @@ export const RegisterCustomer = z.object({
   password: z
     .string({ required_error: "password is required" })
     .min(8, { message: "Password must be at least 8 characters long" }),
-  fname: z.string({ required_error: "fname is required" }),
-  lname: z.string({ required_error: "lname is required" }),
+  fullname: z.string({ required_error: "fname is required" }),
   customer_type: z.enum([CustomerType.individu, CustomerType.company], {
     required_error: "customer_type is required",
   }),
   phone: z.string({ required_error: "phone is required" }),
+  cname: z.string({ required_error: "phone is required" }).optional(),
 });
 
 export const AdminRegister = z.object({
@@ -38,7 +38,11 @@ export const LoginCustomerSchema = z.object({
 });
 
 export const IDSchema = z.object({
-  customerid: z.string({ required_error: "ne error is required" }),
+  customerid: z.string({ required_error: "customerid is required" }),
+});
+
+export const ReturnSchema = z.object({
+  invoice_id: z.string({ required_error: "invoice_id is required" }),
 });
 
 export const Rent = z.object({

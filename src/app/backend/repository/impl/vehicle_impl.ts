@@ -34,8 +34,7 @@ export class VehcileRepository implements IVehicle {
             customer: {
               select: {
                 phone: true,
-                fname: true,
-                lname: true,
+                fullname: true,
               },
             },
           },
@@ -59,8 +58,7 @@ export class VehcileRepository implements IVehicle {
               customer: {
                 select: {
                   phone: true,
-                  fname: true,
-                  lname: true,
+                  fullname: true,
                 },
               },
             },

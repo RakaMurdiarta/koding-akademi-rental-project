@@ -8,7 +8,7 @@ import {
 } from "@/app/backend/utils/helper";
 import { validator } from "@/app/backend/utils/validator/helper";
 import { RegisterCustomer } from "@/app/backend/utils/validator/schema";
-import { Customer } from "@prisma/client";
+import { Customer, CustomerType } from "@prisma/client";
 import { HttpStatusCode } from "axios";
 import { NextRequest, NextResponse } from "next/server";
 export async function POST(req: NextRequest, res: NextResponse) {
@@ -19,8 +19,20 @@ export async function POST(req: NextRequest, res: NextResponse) {
 
     const body = await req.json();
 
-    const { customer_type, email, fname, lname, password, phone } =
+    const { customer_type, email, fullname, password, phone , cname} =
       await validator.validate(RegisterCustomer, body);
+
+    if(customer_type=== CustomerType.individu){
+      if(cname){
+        throw new ApiError("company name is not required", HttpStatusCode.BadRequest)
+      }
+    }
+
+    if(customer_type=== CustomerType.company){
+      if(!cname){
+        throw new ApiError("company name is required", HttpStatusCode.BadRequest)
+      }
+    }
 
     //get customer
     const customerisExist = await customerService.getCustomerByEmail(email);
@@ -36,15 +48,15 @@ export async function POST(req: NextRequest, res: NextResponse) {
     const customer: Customer = await customerService.addCustomer(
       email,
       hashpass,
-      fname,
-      lname,
+      fullname,
       phone,
-      customer_type
+      customer_type,
+      cname
     );
 
     const { password: ignorePassword, ...rest } = customer;
 
-    return new ResponseHandler().success(rest, undefined, HttpStatusCode.Ok);
+    return new ResponseHandler().success(null, undefined, HttpStatusCode.Ok);
   } catch (error: any) {
     return handleError(error);
   }

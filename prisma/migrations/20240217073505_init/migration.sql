@@ -27,18 +27,8 @@ CREATE TABLE `Vehicle` (
     `price` DOUBLE NOT NULL,
     `type` VARCHAR(191) NOT NULL,
     `imageUrl` VARCHAR(191) NOT NULL,
+    `is_available` BOOLEAN NOT NULL DEFAULT true,
 
-    PRIMARY KEY (`id`)
-) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-
--- CreateTable
-CREATE TABLE `Availability` (
-    `id` VARCHAR(191) NOT NULL,
-    `available_date` DATETIME(3) NULL,
-    `is_avalaible` BOOLEAN NOT NULL,
-    `vehicle_id` VARCHAR(191) NOT NULL,
-
-    UNIQUE INDEX `Availability_vehicle_id_key`(`vehicle_id`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -49,8 +39,7 @@ CREATE TABLE `Customer` (
     `email` VARCHAR(191) NOT NULL,
     `password` VARCHAR(191) NOT NULL,
     `customerType` ENUM('individu', 'company') NULL DEFAULT 'individu',
-    `fname` VARCHAR(191) NOT NULL,
-    `lname` VARCHAR(191) NOT NULL,
+    `fullname` VARCHAR(191) NOT NULL,
     `cname` VARCHAR(191) NULL,
 
     UNIQUE INDEX `Customer_email_key`(`email`),
@@ -99,9 +88,6 @@ ALTER TABLE `OwnerRequestHistory` ADD CONSTRAINT `OwnerRequestHistory_customer_i
 
 -- AddForeignKey
 ALTER TABLE `Vehicle` ADD CONSTRAINT `Vehicle_owner_id_fkey` FOREIGN KEY (`owner_id`) REFERENCES `Owner`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE `Availability` ADD CONSTRAINT `Availability_vehicle_id_fkey` FOREIGN KEY (`vehicle_id`) REFERENCES `Vehicle`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `Rents` ADD CONSTRAINT `Rents_customer_id_fkey` FOREIGN KEY (`customer_id`) REFERENCES `Customer`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
