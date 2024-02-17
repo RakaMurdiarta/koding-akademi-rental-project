@@ -1,9 +1,10 @@
 import * as Yup from "yup";
 import { ValidationConstant } from "./constant";
 
-const registerValidation = Yup.object({
+const registerCompanyValidation = Yup.object({
   email: Yup.string().email("Invalid email").required("Email is required"),
   fullname: Yup.string().required("First name is required!"),
+  cname: Yup.string().required("Company name is required!"),
   password: Yup.string()
     .min(
       ValidationConstant.MINIMUM_PASSWORD_LENGTH,
@@ -22,4 +23,4 @@ const registerValidation = Yup.object({
     .max(15, "Phone number must not exceed 15 digits"),
 });
 
-export default registerValidation;
+export default registerCompanyValidation;

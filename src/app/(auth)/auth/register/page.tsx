@@ -6,6 +6,7 @@ import {
 } from "@/app/service/authServiceController";
 import { BaseApiResponse } from "@/app/service/interface";
 import AuthInput from "@/components/ui/form/input";
+import registerCompanyValidation from "@/lib/validationSchema/registerCompanyValidation";
 import registerValidation from "@/lib/validationSchema/registerValidation";
 import { AxiosError } from "axios";
 import { Field, Form, Formik } from "formik";
@@ -15,11 +16,13 @@ import { toast } from "react-toastify";
 
 const Page = () => {
   const radioValue = [{ value: "individu" }, { value: "company" }];
+  const [isCompany, setIsCompany] = useState(false);
+
   const [registerFormData, setRegisterFormData] = useState<registerFormData>({
     email: "",
     password: "",
-    fname: "",
-    lname: "",
+    fullname: "",
+    cname: "",
     phone: "",
     customer_type: "individu",
   });
@@ -31,6 +34,7 @@ const Page = () => {
     await authService
       .register(data)
       .then((resp) => {
+        console.log(resp.data);
         toast.success("Successfully register proceed to log in!");
         setTimeout(() => {
           router.push("/auth/login");
@@ -49,50 +53,57 @@ const Page = () => {
         onSubmit={(values) => {
           register(values);
         }}
-        validationSchema={registerValidation}
+        validationSchema={
+          isCompany ? registerCompanyValidation : registerValidation
+        }
       >
-        {({ errors, touched, values, handleChange }) => (
+        {({ errors, touched, values, handleChange, setTouched, setValues }) => (
           <Form>
             <p className="mb-4 font-semibold text-xl">Register a new account</p>
             <div className="flex flex-col gap-4">
-              <div className="flex flex-col gap-1">
-                <AuthInput
-                  error={errors.fname}
-                  name="Firstname"
-                  type="text"
-                  touched={touched.fname}
-                  value={values.fname}
-                  handleChange={handleChange("fname")}
-                />
-                {touched.fname && errors?.fname && (
-                  <p className="text-red-500 mt-0.5">{errors.fname}</p>
-                )}
-              </div>
-              <div className="flex flex-col gap-1">
-                <AuthInput
-                  error={errors.lname}
-                  name="Lastname"
-                  type="text"
-                  touched={touched.lname}
-                  value={values.lname}
-                  handleChange={handleChange("lname")}
-                />
-                {touched.lname && errors?.lname && (
-                  <p className="text-red-500 mt-0.5">{errors.lname}</p>
-                )}
-              </div>
-              <div className="flex flex-col gap-1">
-                <AuthInput
-                  error={errors.phone}
-                  name="Phone"
-                  type="text"
-                  touched={touched.phone}
-                  value={values.phone}
-                  handleChange={handleChange("phone")}
-                />
-                {touched.phone && errors?.phone && (
-                  <p className="text-red-500 mt-0.5">{errors.phone}</p>
-                )}
+              <div id="customerType" className="flex gap-2">
+                {radioValue.map((item, index) => (
+                  <label
+                    onClick={() => {
+                      if (item.value !== values.customer_type) {
+                        setTouched({
+                          email: false,
+                          password: false,
+                          fullname: false,
+                          cname: false,
+                          phone: false,
+                        });
+                        setValues({
+                          email: "",
+                          password: "",
+                          fullname: "",
+                          cname: "",
+                          phone: "",
+                          customer_type: item.value,
+                        });
+                      }
+                      if (item.value === "company") {
+                        setIsCompany(true);
+                      } else {
+                        setIsCompany(false);
+                      }
+                    }}
+                    key={index}
+                    className={`w-6/12 py-4 rounded flex justify-center items-center uppercase text-center transition-all ease-in-out border-2 border-neutral-200  ${
+                      values.customer_type === item.value
+                        ? "bg-slate-600 text-white font-semibold"
+                        : "bg-transparent hover:bg-slate-200"
+                    } `}
+                  >
+                    <Field
+                      type="radio"
+                      name="customer_type"
+                      value={item.value}
+                      className="hidden"
+                    />
+                    {item.value}
+                  </label>
+                ))}
               </div>
               <div className="flex flex-col gap-1">
                 <AuthInput
@@ -120,28 +131,48 @@ const Page = () => {
                   <p className="text-red-500 mt-0.5">{errors.password}</p>
                 )}
               </div>
-              <div id="customerType" className="flex gap-2">
-                {radioValue.map((item, index) => (
-                  <label
-                    key={index}
-                    className={`w-6/12 py-4 rounded flex justify-center items-center uppercase text-center transition-all ease-in-out border-2 border-neutral-200  ${
-                      values.customer_type === item.value
-                        ? "bg-slate-600 text-white font-semibold"
-                        : "bg-transparent hover:bg-slate-200"
-                    } `}
-                  >
-                    <Field
-                      type="radio"
-                      name="customer_type"
-                      value={item.value}
-                      className="hidden"
-                    />
-                    {item.value}
-                  </label>
-                ))}
+              <div className="flex flex-col gap-1">
+                <AuthInput
+                  error={errors.fullname}
+                  name="Fullname"
+                  type="text"
+                  touched={touched.fullname}
+                  value={values.fullname}
+                  handleChange={handleChange("fullname")}
+                />
+                {touched.fullname && errors?.fullname && (
+                  <p className="text-red-500 mt-0.5">{errors.fullname}</p>
+                )}
+              </div>
+              {isCompany && (
+                <div className="flex flex-col gap-1">
+                  <AuthInput
+                    error={errors.cname}
+                    name="CompanyName"
+                    type="text"
+                    touched={touched.cname}
+                    value={values.cname}
+                    handleChange={handleChange("cname")}
+                  />
+                  {touched.cname && errors?.cname && (
+                    <p className="text-red-500 mt-0.5">{errors.cname}</p>
+                  )}
+                </div>
+              )}
+              <div className="flex flex-col gap-1">
+                <AuthInput
+                  error={errors.phone}
+                  name="Phone"
+                  type="text"
+                  touched={touched.phone}
+                  value={values.phone}
+                  handleChange={handleChange("phone")}
+                />
+                {touched.phone && errors?.phone && (
+                  <p className="text-red-500 mt-0.5">{errors.phone}</p>
+                )}
               </div>
             </div>
-
             <div className="my-6 text-center">
               <button
                 type="submit"
