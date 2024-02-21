@@ -25,7 +25,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
  
     const isowner = await customerService.isOwner(id);
 
-    return new ResponseHandler<boolean>().success(
+    return new ResponseHandler<string>().success(
       isowner,
       undefined,
       HttpStatusCode.Ok

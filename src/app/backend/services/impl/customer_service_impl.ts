@@ -100,7 +100,7 @@ class CustomerService implements ICustomerService {
 
     return request;
   };
-  isOwner = async (customerId: string): Promise<boolean> => {
+  isOwner = async (customerId: string): Promise<string> => {
     return await this.customerRepository.isOwner(customerId);
   };
 

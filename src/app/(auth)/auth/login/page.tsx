@@ -93,7 +93,8 @@ const Page = () => {
       <div className="flex items-center justify-between pb-6">
         <p className="mb-0 mr-2">Dont have an account?</p>
         <a
-          href="/auth/register"
+        target="_blank"
+          href="http://localhost:8080/api/v1/auth/google"
           className="px-8 py-3 rounded border-2 border-neutral-200 text-xs uppercase leading-normal transition duration-150 ease-in-out  bg-transparent hover:bg-slate-100 font-bold text-black"
         >
           register
