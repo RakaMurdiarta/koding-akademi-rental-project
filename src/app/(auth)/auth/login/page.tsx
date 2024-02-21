@@ -12,6 +12,7 @@ import { Form, Formik } from "formik";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { toast } from "react-toastify";
+import { setCookie } from "cookies-next";
 
 const Page = () => {
   const [loginFormData, setLoginFormData] = useState<loginFormData>({
@@ -26,11 +27,11 @@ const Page = () => {
     await authService
       .login(data)
       .then((resp) => {
-        toast.success("Successfully register proceed to log in!");
-        console.log(resp);
-        // setTimeout(() => {
-        //   router.push("/");
-        // }, 2500);
+        toast.success("Login Succesful!");
+        setCookie("jwt", resp.data.data);
+        setTimeout(() => {
+          router.push("/");
+        }, 2500);
       })
       .catch((err) => {
         const error: AxiosError<BaseApiResponse<loginResponse>> = err as any;
