@@ -1,6 +1,6 @@
 "use client";
 import "react-toastify/dist/ReactToastify.css";
-import "./globals.css";
+import "../(site)/globals.css";
 
 import {
   ChevronDoubleLeftIcon,
@@ -90,7 +90,7 @@ export default function RootLayout({
                   </p>
                 </div>
 
-                <div className="flex flex-col gap-2 justify-center items-center capitalize py-4 font-montserrat">
+                {/* <div className="flex flex-col gap-2 justify-center items-center capitalize py-4 font-montserrat">
                   {navLinks.map((link) => (
                     <Link key={link.name} href={link.link}>
                       <p
@@ -105,26 +105,14 @@ export default function RootLayout({
                       </p>
                     </Link>
                   ))}
-                </div>
+                </div> */}
                 {/* Social Icons Section */}
                 <div className="font-light text-sm text-center py-4 flex flex-col gap-3">
                   <div
-                    onClick={() => {
-                      isOwner === "false" && requestOwner();
-                    }}
-                    className={`px-2 py-1 border rounded-md capitalize bg-slate-200 font-bold transition-all ease-in-out
-                    ${
-                      isOwner === "false" && "hover:bg-slate-300 cursor-pointer"
-                    } ${
-                      isOwner === "true" &&
-                      "text-green-500 border-2 border-green-500"
-                    }`}
+                    className={`px-2 py-1 border rounded-md capitalize bg-slate-200 font-bold transition-all ease-in-out text-green-500 border-2 border-green-500"
+                    `}
                   >
-                    {isOwner === "false"
-                      ? "request owner"
-                      : isOwner === "pending"
-                      ? "Waiting for verification"
-                      : "Owner"}
+                    admin
                   </div>
 
                   <p className="italic">

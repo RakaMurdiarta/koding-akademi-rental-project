@@ -34,8 +34,7 @@ const Page = () => {
         }, 2500);
       })
       .catch((err) => {
-        const error: AxiosError<BaseApiResponse<loginResponse>> = err as any;
-        toast.error(error.response?.data.message ?? "Please try again!");
+        toast.error(err.message ?? "Please try again!");
       });
   };
 
