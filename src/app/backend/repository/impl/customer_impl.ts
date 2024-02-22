@@ -82,16 +82,23 @@ class CustomerRepository implements ICustomer {
     }
     return "request is success. waiting for admin reviewing";
   };
-  async isOwner(customerId: string): Promise<boolean> {
-      const history = await this.repository.ownerRequestHistory.findFirst({
-        where: {customerId}
-      })
+  async isOwner(customerId: string): Promise<string> {
+    const history = await this.repository.ownerRequestHistory.findFirst({
+      where: { customerId },
+    });
 
-      if(!history){
-        return false
-      }
+    if (!history) {
+      return "notOwner";
+    }
 
-      return history.status.toLowerCase() === StatusRequestOwner.accepted.toLowerCase()
+    if (
+      history.status.toLowerCase() ===
+      StatusRequestOwner.requested.toLowerCase()
+    ) {
+      return "pending";
+    }
+
+    return "isOwner";
   }
 }
 
