@@ -1,4 +1,4 @@
-import { Customer, CustomerType, ReturnHistory, Vehicle } from "@prisma/client";
+import { Customer, CustomerType, Rents, ReturnHistory, Vehicle } from "@prisma/client";
 
 export interface ICustomerService {
   addCustomer(
@@ -15,4 +15,5 @@ export interface ICustomerService {
   createRequestOwner(customerId: string) : Promise<string>
   isOwner(customerId: string) : Promise<string> 
   createReturnHistory(rent_id: string) : Promise<ReturnHistory>
+  getListRentByCustomerId(custId: string): Promise<Rents[] | []> 
 }

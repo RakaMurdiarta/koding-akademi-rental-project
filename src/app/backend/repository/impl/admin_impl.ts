@@ -1,4 +1,10 @@
-import { $Enums, Admin, OwnerRequestHistory, PrismaClient , StatusRequestOwner} from "@prisma/client";
+import {
+  $Enums,
+  Admin,
+  OwnerRequestHistory,
+  PrismaClient,
+  StatusRequestOwner,
+} from "@prisma/client";
 import prisma from "@/app/backend/config/prismaSingleton";
 import { IAdmin } from "../iadmin";
 
@@ -33,9 +39,9 @@ export class AdminRepository implements IAdmin {
         where: { customerId },
         data: { status: StatusRequestOwner.accepted },
       });
-      console.log("INI UPDTE",update)
+      console.log("INI UPDTE", update);
       if (update) {
-        return true; 
+        return true;
       } else {
         return false;
       }
@@ -45,13 +51,27 @@ export class AdminRepository implements IAdmin {
     }
   };
 
-  getListRequesttOwner = async (): Promise<OwnerRequestHistory[] | []> =>{
-      const list = await this.repository.ownerRequestHistory.findMany()
+  getListRequesttOwner = async (): Promise<OwnerRequestHistory[] | []> => {
+    const list = await this.repository.ownerRequestHistory.findMany();
 
-      if(list.length<=0){
-        return []
-      }
+    if (list.length <= 0) {
+      return [];
+    }
 
-      return list
-  }
+    return list;
+  };
+
+  getAdminByEmail = async (
+    email: string
+  ): Promise<{ id: string; username: string; password: string } | null> => {
+    const admin = await this.repository.admin.findFirst({
+      where: { username: email },
+    });
+
+    if(!admin){
+      return null
+    }
+
+    return admin
+  };
 }

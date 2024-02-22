@@ -42,4 +42,18 @@ export class RentRepository implements IRent {
     }
     return rent;
   };
+
+  getListRentByCustomerId = async (custId: string): Promise<Rents[] | []> => {
+    const rent = await this.repository.rents.findMany({
+      where: {
+        customer: { id: custId },
+      },
+      include: { customer: true, vehicle: true },
+    });
+
+    if (rent.length <= 0) {
+      return [];
+    }
+    return rent;
+  };
 }

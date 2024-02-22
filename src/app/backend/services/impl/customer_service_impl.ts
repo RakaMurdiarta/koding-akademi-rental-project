@@ -126,6 +126,15 @@ class CustomerService implements ICustomerService {
 
     return returnRent
   };
+
+  getListRentByCustomerId = async (custId: string): Promise<Rents[] | []> => {
+      const rentList = await this.rentRepo.getListRentByCustomerId(custId)
+      if(rentList.length<=0){
+        return []
+      }
+
+      return rentList
+  }
 }
 
 export const customerService = new CustomerService();

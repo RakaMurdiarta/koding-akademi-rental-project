@@ -4,4 +4,5 @@ export interface IAdmin {
   insert(username: string, password: string): Promise<Admin | null>;
   acceptRequestOwner(customerId : string) : Promise<boolean>
   getListRequesttOwner() : Promise<OwnerRequestHistory[] | []>
+  getAdminByEmail(email : string) : Promise<Admin | null>
 }

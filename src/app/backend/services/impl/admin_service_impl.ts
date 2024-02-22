@@ -36,6 +36,16 @@ class AdminService implements IAdminService {
   getListRequestOwner = async (): Promise<OwnerRequestHistory[]> => {
     return await this.adminrepo.getListRequesttOwner();
   };
+
+  getAdminByEmail = async (email: string): Promise<{ id: string; username: string; password: string; } | null> => {
+      const admin = await this.adminrepo.getAdminByEmail(email)    
+
+      if(!admin){
+        return null
+      }
+
+      return admin
+  }
 }
 
 export const adminservice = new AdminService();
