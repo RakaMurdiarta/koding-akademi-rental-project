@@ -58,3 +58,4 @@ export const sendEmail = async <T>(recipient: Recipient<T>) => {
     throw new ApiError(error.message, 400);
   }
 };
+
