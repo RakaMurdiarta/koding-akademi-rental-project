@@ -24,8 +24,9 @@ export class AuthServiceController {
       const response = await axios.post(endpoint, data);
       return response;
     } catch (err) {
-      console.log(err);
-      throw err;
+      const error: AxiosError<BaseApiResponse<any>> = err as any;
+
+      throw error.response?.data;
     }
   }
 
@@ -48,8 +49,10 @@ export class AuthServiceController {
         data.cname !== "" ? newRequestData : requestData
       );
       return response;
-    } catch (error) {
-      throw new Error("Method not implemented.");
+    } catch (err) {
+      const error: AxiosError<BaseApiResponse<any>> = err as any;
+
+      throw error.response?.data;
     }
   }
 }
