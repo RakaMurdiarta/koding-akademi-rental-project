@@ -16,4 +16,5 @@ export interface ICustomerService {
   isOwner(customerId: string) : Promise<string> 
   createReturnHistory(rent_id: string) : Promise<ReturnHistory>
   getListRentByCustomerId(custId: string): Promise<Rents[] | []> 
+  getListVehicleByCustomerId(custId: string): Promise<Vehicle[] | []> 
 }

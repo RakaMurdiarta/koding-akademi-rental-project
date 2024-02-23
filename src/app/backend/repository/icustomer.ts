@@ -1,4 +1,4 @@
-import { Customer, CustomerType } from "@prisma/client";
+import { Customer, CustomerType, Vehicle } from "@prisma/client";
 
 export interface ICustomer {
   insert(
@@ -13,4 +13,5 @@ export interface ICustomer {
   getCustomerByEmail(email:string) : Promise<Customer | null> 
   requestOwner(customerId : string) : Promise<string | null>
   isOwner(customerId : string) : Promise<string>
+  getVehicleListByCustomerId(custId : string) : Promise<Vehicle[] | []>
 }

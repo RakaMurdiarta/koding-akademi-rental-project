@@ -3,6 +3,7 @@ import {
   CustomerType,
   PrismaClient,
   StatusRequestOwner,
+  Vehicle,
 } from "@prisma/client";
 import { ICustomer } from "../icustomer";
 import prisma from "@/app/backend/config/prismaSingleton";
@@ -100,6 +101,21 @@ class CustomerRepository implements ICustomer {
 
     return "isOwner";
   }
+
+  getVehicleListByCustomerId = async (
+    custId: string
+  ): Promise<Vehicle[] | []> => {
+    const vehicleList = await this.repository.vehicle.findMany({
+      where: {
+        owner: { customer: { id: custId } },
+      },
+      include: {
+        owner: { include: { customer: true } },
+      }
+    });
+
+    return vehicleList
+  };
 }
 
 export default CustomerRepository;
