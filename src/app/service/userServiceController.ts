@@ -1,4 +1,4 @@
-import axios, { AxiosError } from "axios";
+import { AxiosError } from "axios";
 import { ApiResponse, BaseApiResponse } from "./interface";
 import axiosInstance from "@/lib/axios";
 import { RequestCookie } from "next/dist/compiled/@edge-runtime/cookies";

@@ -1,4 +1,4 @@
-import axios, { AxiosError } from "axios";
+import { AxiosError } from "axios";
 import { ApiResponse, BaseApiResponse } from "./interface";
 import axiosInstance from "@/lib/axios";
 
@@ -194,7 +194,7 @@ export class vehicleServiceController {
   public async add(data: AddVehicle): Promise<ApiResponse<any>> {
     const endpoint = "/api/v1/customer/post/vehicle";
     try {
-      const response = await axios.post(endpoint, data);
+      const response = await axiosInstance.post(endpoint, data);
       return response;
     } catch (err) {
       const error: AxiosError<BaseApiResponse<any>> = err as any;
