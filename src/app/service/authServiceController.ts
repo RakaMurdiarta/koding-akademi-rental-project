@@ -14,7 +14,10 @@ export type registerFormData = {
   cname: string;
 };
 
-export type loginResponse = string | null;
+export type loginResponse = {
+  token: string;
+  isAdmin: string;
+};
 
 export class AuthServiceController {
   public async login(data: loginFormData): Promise<ApiResponse<loginResponse>> {

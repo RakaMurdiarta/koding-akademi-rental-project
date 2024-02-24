@@ -4,7 +4,7 @@ import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
 
 type AuthInputType = {
   name: string;
-  value: string;
+  value?: string | number;
   error?: string;
   type: string;
   touched?: boolean;
@@ -35,7 +35,7 @@ const AuthInput: FC<AuthInputType> = ({
         onChange={handleChange}
         id={name}
         name={name}
-        type={type === "password" ? (show ? "text" : "password") : "text"}
+        type={type === "password" ? (show ? "text" : "password") : type}
         className={`peer block min-h-[auto] w-full rounded   border-2 border-solid px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear motion-reduce:transition-none dark:placeholder:text-neutral-200 placeholder:opacity-0 ${
           touched && error ? "border-red-500" : "border-neutral-200"
         }`}

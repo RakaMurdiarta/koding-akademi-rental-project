@@ -15,6 +15,8 @@ import {
   userStatus,
 } from "../service/userServiceController";
 import { ToastContainer, toast } from "react-toastify";
+import { deleteCookie } from "cookies-next";
+import { logout } from "../(site)/utils";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -23,44 +25,8 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const navLinks = [
-    { link: "/", name: "home" },
-    { link: "/rent", name: "rented" },
-    { link: "/owner", name: "My Vehicles" },
-  ];
   const [isNavOpen, setIsNavOpen] = useState(false);
-  const [isOwner, setIsOwner] = useState<userStatus>("false");
   const userService = new userServiceController();
-
-  const getIsOwner = async () => {
-    console.log("getting is owner");
-
-    await userService
-      .isOwner()
-      .then((resp) => {
-        setIsOwner(resp.data.data);
-      })
-      .catch((err) => {
-        console.log(err ?? "Something went wrong!");
-        return false;
-      });
-  };
-
-  const requestOwner = async () => {
-    await userService
-      .requestOwner()
-      .then((resp) => {
-        toast.success("Request has been sent!");
-      })
-      .catch((err) => {
-        console.log(err ?? "Something went wrong!");
-        toast.error("Something went wrong!");
-      });
-  };
-
-  useEffect(() => {
-    getIsOwner();
-  }, []);
 
   useEffect(() => {
     if (isNavOpen) {
@@ -109,10 +75,18 @@ export default function RootLayout({
                 {/* Social Icons Section */}
                 <div className="font-light text-sm text-center py-4 flex flex-col gap-3">
                   <div
-                    className={`px-2 py-1 border rounded-md capitalize bg-slate-200 font-bold transition-all ease-in-out text-green-500 border-2 border-green-500"
+                    className={`px-2 py-1 border rounded-md capitalize bg-slate-200 font-bold transition-all ease-in-out text-green-500  border-green-500"
                     `}
                   >
                     admin
+                  </div>
+
+                  <div
+                    className={`px-2 py-1 border rounded-md capitalize bg-slate-200 font-bold transition-all ease-in-out text-red-500  border-red-500 cursor-pointer hover:bg-slate-300"
+                    `}
+                    onClick={logout}
+                  >
+                    Log Out
                   </div>
 
                   <p className="italic">
@@ -141,7 +115,7 @@ export default function RootLayout({
           </div>
           <div
             // onClick={() => setIsNavOpen(false)}
-            className={`w-full h-full overflow-hidden lg:hidden absolute transition-all ease-in-out duration-500 z-[98] bg-opacity-60 ${
+            className={`w-full h-full overflow-hidden lg:hidden bg-black absolute transition-all ease-in-out duration-500 z-[98] bg-opacity-60 ${
               isNavOpen ? "visible opacity-100" : "invisible opacity-0"
             }`}
           ></div>

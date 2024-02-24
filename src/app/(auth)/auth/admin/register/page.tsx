@@ -1,35 +1,33 @@
 "use client";
-import {
-  AuthServiceController,
-  loginFormData,
-  loginResponse,
-} from "@/app/service/authServiceController";
-import { BaseApiResponse } from "@/app/service/interface";
+
 import AuthInput from "@/components/ui/form/input";
 import loginValidation from "@/lib/validationSchema/loginValidation";
-import { AxiosError } from "axios";
 import { Form, Formik } from "formik";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { toast } from "react-toastify";
 import { setCookie } from "cookies-next";
+import {
+  RegisterAdmin,
+  adminServiceController,
+} from "@/app/service/adminServiceController";
+import { registerFormData } from "@/app/service/authServiceController";
+import registerAdminValidation from "@/lib/validationSchema/registerAdminValidation";
 
 const Page = () => {
-  const [loginFormData, setLoginFormData] = useState<loginFormData>({
-    email: "",
+  const [registerFormData, setRegisterFormData] = useState<RegisterAdmin>({
+    username: "",
     password: "",
   });
 
-  const authService = new AuthServiceController();
+  const adminService = new adminServiceController();
   const router = useRouter();
 
-  const login = async (data: loginFormData) => {
-    await authService
-      .login(data)
+  const register = async (data: RegisterAdmin) => {
+    await adminService
+      .register(data)
       .then((resp) => {
-        toast.success("Login Succesful!");
-        setCookie("jwt", resp.data.data.token);
-        setCookie("isAdmin", resp.data.data.isAdmin);
+        toast.success("Register Succesful!");
         setTimeout(() => {
           router.push("/");
         }, 2500);
@@ -42,27 +40,27 @@ const Page = () => {
   return (
     <>
       <Formik
-        initialValues={loginFormData}
+        initialValues={registerFormData}
         onSubmit={(values) => {
-          login(values);
+          register(values);
         }}
-        validationSchema={loginValidation}
+        validationSchema={registerAdminValidation}
       >
         {({ errors, touched, values, handleChange }) => (
           <Form>
-            <p className="mb-4">Please login to your account</p>
+            <p className="mb-4">Register Admin</p>
             <div className="flex flex-col gap-4">
               <div className="flex flex-col gap-1">
                 <AuthInput
-                  error={errors.email}
+                  error={errors.username}
                   name="Email"
-                  type="email"
-                  touched={touched.email}
-                  value={values.email}
-                  handleChange={handleChange("email")}
+                  type="text"
+                  touched={touched.username}
+                  value={values.username}
+                  handleChange={handleChange("username")}
                 />
-                {touched.email && errors?.email && (
-                  <p className="text-red-500 mt-0.5">{errors.email}</p>
+                {touched.username && errors?.username && (
+                  <p className="text-red-500 mt-0.5">{errors.username}</p>
                 )}
               </div>
               <div className="flex flex-col gap-1">
@@ -85,21 +83,12 @@ const Page = () => {
                 type="submit"
                 className="px-8 py-3 rounded border-2 border-neutral-200 text-xs uppercase leading-normal transition duration-150 ease-in-out  bg-slate-600 hover:bg-slate-700 font-bold text-white"
               >
-                Login
+                Register Admin
               </button>
             </div>
           </Form>
         )}
       </Formik>
-      <div className="flex items-center justify-between pb-6">
-        <p className="mb-0 mr-2">Dont have an account?</p>
-        <a
-          href="/auth/register"
-          className="px-8 py-3 rounded border-2 border-neutral-200 text-xs uppercase leading-normal transition duration-150 ease-in-out  bg-transparent hover:bg-slate-100 font-bold text-black"
-        >
-          register
-        </a>
-      </div>
     </>
   );
 };

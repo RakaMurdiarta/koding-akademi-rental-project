@@ -15,6 +15,7 @@ import {
   userStatus,
 } from "../service/userServiceController";
 import { ToastContainer, toast } from "react-toastify";
+import { logout } from "./utils";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -25,16 +26,14 @@ export default function RootLayout({
 }) {
   const navLinks = [
     { link: "/", name: "home" },
-    { link: "/rent", name: "rented" },
-    { link: "/owner", name: "My Vehicles" },
+    { link: "/user/rented", name: "rented" },
+    { link: "/user/vehicle/my", name: "My Vehicles" },
   ];
   const [isNavOpen, setIsNavOpen] = useState(false);
-  const [isOwner, setIsOwner] = useState<userStatus>("false");
+  const [isOwner, setIsOwner] = useState<userStatus>("notOwner");
   const userService = new userServiceController();
 
   const getIsOwner = async () => {
-    console.log("getting is owner");
-
     await userService
       .isOwner()
       .then((resp) => {
@@ -51,6 +50,7 @@ export default function RootLayout({
       .requestOwner()
       .then((resp) => {
         toast.success("Request has been sent!");
+        getIsOwner();
       })
       .catch((err) => {
         console.log(err ?? "Something went wrong!");
@@ -95,8 +95,8 @@ export default function RootLayout({
                     <Link key={link.name} href={link.link}>
                       <p
                         className={`cursor-pointer hover:tracking-widest hover:font-bold transition-all ease-in-out ${
-                          link.link === "/owner" &&
-                          isOwner === "false" &&
+                          link.link === "/user/vehicle/my" &&
+                          isOwner !== "isOwner" &&
                           "hidden"
                         }`}
                         onClick={() => setIsNavOpen(false)}
@@ -110,21 +110,29 @@ export default function RootLayout({
                 <div className="font-light text-sm text-center py-4 flex flex-col gap-3">
                   <div
                     onClick={() => {
-                      isOwner === "false" && requestOwner();
+                      isOwner === "notOwner" && requestOwner();
                     }}
                     className={`px-2 py-1 border rounded-md capitalize bg-slate-200 font-bold transition-all ease-in-out
                     ${
-                      isOwner === "false" && "hover:bg-slate-300 cursor-pointer"
+                      isOwner === "notOwner" &&
+                      "hover:bg-slate-300 cursor-pointer"
                     } ${
-                      isOwner === "true" &&
+                      isOwner === "isOwner" &&
                       "text-green-500 border-2 border-green-500"
                     }`}
                   >
-                    {isOwner === "false"
+                    {isOwner === "notOwner"
                       ? "request owner"
                       : isOwner === "pending"
                       ? "Waiting for verification"
                       : "Owner"}
+                  </div>
+                  <div
+                    className={`px-2 py-1 border rounded-md capitalize bg-slate-200 font-bold transition-all ease-in-out text-red-500  border-red-500 cursor-pointer hover:bg-slate-300"
+                    `}
+                    onClick={logout}
+                  >
+                    Log Out
                   </div>
 
                   <p className="italic">
@@ -152,8 +160,8 @@ export default function RootLayout({
             </div>
           </div>
           <div
-            // onClick={() => setIsNavOpen(false)}
-            className={`w-full h-full overflow-hidden lg:hidden absolute transition-all ease-in-out duration-500 z-[98] bg-opacity-60 ${
+            onClick={() => setIsNavOpen(false)}
+            className={`w-full h-full overflow-hidden lg:hidden bg-black absolute transition-all ease-in-out duration-500 z-[98] bg-opacity-60 ${
               isNavOpen ? "visible opacity-100" : "invisible opacity-0"
             }`}
           ></div>
