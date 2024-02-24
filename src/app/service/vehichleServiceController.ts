@@ -167,7 +167,7 @@ export class vehicleServiceController {
     }
   }
 
-  public async getMy(jwt: string): Promise<BaseApiResponse<Rental[]>> {
+  public async getMy(jwt: string): Promise<BaseApiResponse<Vehicle[]>> {
     const endpoint = "/api/v1/customer/vehicle/list";
 
     try {

@@ -14,7 +14,7 @@ import AuthInput from "@/components/ui/form/input";
 import addVehicleValidation from "@/lib/validationSchema/addVehicleValidation";
 
 type prop = {
-  data: Rental[];
+  data: Vehicle[];
 };
 
 const MyVehicles: FC<prop> = ({ data }) => {
@@ -68,26 +68,25 @@ const MyVehicles: FC<prop> = ({ data }) => {
             >
               <div className="w-full h-full transition-all ease-in-out duration-300">
                 <img
-                  src={vehicle.vehicle.imageUrl}
-                  alt={vehicle.vehicle.model}
+                  src={vehicle.imageUrl}
+                  alt={vehicle.model}
                   className="w-full min-h-[300px] brightness-100 object-cover object-center brightness-100 group-hover:brightness-50 transition-all ease-in-out duration-300"
                 />
               </div>
               <div className="bg-white w-full absolute bottom-[-150px] p-4 transition-all ease-in-out duration-300 group-hover:bottom-0 flex justify-between">
                 <div className="flex flex-col gap-1 w-1/2">
                   <p className="font-bold text-base min-h-[3rem] overflow-ellipsis">
-                    {vehicle.vehicle.model}
+                    {vehicle.model}
                   </p>
-                  <p className="text-xs italic">Must return on:</p>
-                  <p className="text-sm">
-                    {formatDateString(vehicle.returnDate)}
-                  </p>
+                  <p className="text-xs italic">Plate Number</p>
+                  <p className="text-sm">{vehicle.identityNumber}</p>
                 </div>
                 <div className="h-auto flex flex-col w-1/2 gap-1 items-end justify-end">
                   <div>
-                    <p className="text-xs italic text-end">Total:</p>
+                    <p className="text-xs italic text-end">Price</p>
                     <p className="font-bold">
-                      {formatToRupiahIntl(vehicle.amountDue)}
+                      {formatToRupiahIntl(vehicle.price)}
+                      <span className="font-normal">/day</span>
                     </p>
                   </div>
                 </div>
@@ -230,7 +229,7 @@ const MyVehicles: FC<prop> = ({ data }) => {
                             type="submit"
                             className="w-full px-8 py-1 rounded border-2 border-neutral-200 text-xs uppercase leading-normal transition duration-150 ease-in-out  bg-slate-600 hover:bg-slate-700 font-bold text-white"
                           >
-                            Rent!
+                            Add!
                           </button>
                         </div>
                       </Form>

@@ -1,4 +1,7 @@
-import { vehicleServiceController } from "@/app/service/vehichleServiceController";
+import {
+  Vehicle,
+  vehicleServiceController,
+} from "@/app/service/vehichleServiceController";
 import React, { useEffect } from "react";
 import MyVehicles from "./myVehicles";
 import { cookies } from "next/headers";
@@ -24,9 +27,9 @@ const Page = async () => {
     return data;
   };
 
-  const rentedVehicle: any = await getAllMyVehicle();
+  const myVehicle: Vehicle[] = await getAllMyVehicle();
 
-  return <MyVehicles data={rentedVehicle} />;
+  return <MyVehicles data={myVehicle} />;
 };
 
 export default Page;
