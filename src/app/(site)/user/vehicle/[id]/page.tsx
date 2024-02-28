@@ -6,6 +6,8 @@ import {
 import React, { useEffect } from "react";
 import VehicleList from "../../vehicleList";
 import DetailVehicles from "./detailVehicle";
+import { RequestCookie } from "next/dist/compiled/@edge-runtime/cookies";
+import { cookies } from "next/headers";
 
 const dummyVehicle: Vehicle = {
   id: "d27f29b2-d18d-11ee-92b1-0242ac110129",
@@ -30,11 +32,12 @@ const dummyVehicle: Vehicle = {
 
 const Page = async ({ params }: { params: { id: string } }) => {
   const getDetailVehicle = async (id: string) => {
-    console.log("get detail");
+    const cookie = cookies().get("jwt") as RequestCookie;
+    const jwt = cookie.value as string;
     const vehicleService = new vehicleServiceController();
 
     const data = await vehicleService
-      .getById(id)
+      .getById(id, jwt)
       .then((resp) => {
         console.log("test", resp.data);
         return resp.data;

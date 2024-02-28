@@ -5,13 +5,17 @@ import {
   vehicleServiceController,
 } from "../../service/vehichleServiceController";
 import VehicleList from "./vehicleList";
+import { cookies } from "next/headers";
+import { RequestCookie } from "next/dist/compiled/@edge-runtime/cookies";
 
 const Page = async () => {
   const getAllVehicle = async () => {
+    const cookie = cookies().get("jwt") as RequestCookie;
+    const jwt = cookie.value as string;
     const vehicleService = new vehicleServiceController();
 
     const data = await vehicleService
-      .getAll()
+      .getAll(jwt)
       .then((resp) => {
         return resp.data;
       })

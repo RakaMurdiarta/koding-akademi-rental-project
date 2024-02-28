@@ -78,7 +78,7 @@ export interface AddVehicle {
 const domainUrl = process.env.NEXT_PUBLIC_DOMAIN_URL;
 
 export class vehicleServiceController {
-  public async getAll(): Promise<BaseApiResponse<Vehicle[]>> {
+  public async getAll(jwt: string): Promise<BaseApiResponse<Vehicle[]>> {
     const endpoint = "/api/v1/vehicle/all";
     console.log("masuk");
 
@@ -86,6 +86,9 @@ export class vehicleServiceController {
       const response = await fetch(`${domainUrl}${endpoint}`, {
         method: "GET",
         cache: "no-cache",
+        headers: {
+          Authorization: `Bearer ${jwt}`,
+        },
       });
       console.log("data");
 
@@ -102,7 +105,10 @@ export class vehicleServiceController {
     }
   }
 
-  public async getById(id: string): Promise<BaseApiResponse<Vehicle>> {
+  public async getById(
+    id: string,
+    jwt: string
+  ): Promise<BaseApiResponse<Vehicle>> {
     const endpoint = "/api/v1/vehicle/get";
     console.log("masuk");
 
@@ -110,6 +116,9 @@ export class vehicleServiceController {
       const response = await fetch(`${domainUrl}${endpoint}?id=${id}`, {
         method: "GET",
         cache: "no-cache",
+        headers: {
+          Authorization: `Bearer ${jwt}`,
+        },
       });
       console.log("data");
 

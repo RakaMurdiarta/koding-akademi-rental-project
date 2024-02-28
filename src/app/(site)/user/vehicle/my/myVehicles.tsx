@@ -36,7 +36,7 @@ const MyVehicles: FC<prop> = ({ data }) => {
     await vehicleService
       .add(data)
       .then((resp) => {
-        toast.success("Rented Vehicle Returned!");
+        toast.success("Vehicle added!");
         window.location.reload();
       })
       .catch((err) => {

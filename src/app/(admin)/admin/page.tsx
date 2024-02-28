@@ -21,28 +21,28 @@ const dummyData = [
 ];
 
 const Page = async () => {
-  // const getRequestList = async () => {
-  //   const cookie = cookies().get("jwt") as RequestCookie;
-  //   const jwt = cookie.value as string;
-  //   const vehicleService = new adminServiceController();
+  const getRequestList = async () => {
+    const cookie = cookies().get("jwt") as RequestCookie;
+    const jwt = cookie.value as string;
+    const vehicleService = new adminServiceController();
 
-  //   const data = await vehicleService
-  //     .getList(jwt)
-  //     .then((resp) => {
-  //       return resp.data;
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //       console.log(err ?? "Something went wrong!");
-  //       return [];
-  //     });
+    const data = await vehicleService
+      .getList(jwt)
+      .then((resp) => {
+        return resp.data;
+      })
+      .catch((err) => {
+        console.log(err);
+        console.log(err ?? "Something went wrong!");
+        return [];
+      });
 
-  //   return data;
-  // };
+    return data;
+  };
 
-  // const requestList: CustomerListData[] | [] = await getRequestList();
+  const requestList: CustomerListData[] | [] = await getRequestList();
 
-  return <AdminTable />;
+  return <AdminTable data={requestList} />;
 };
 
 export default Page;
