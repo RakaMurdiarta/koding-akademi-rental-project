@@ -66,9 +66,11 @@ export class adminServiceController {
 
     try {
       const response = await fetch(`${domainUrl}${endpoint}`, {
+        method: "GET",
         headers: {
           Authorization: `Bearer ${jwt}`,
         },
+        cache: "no-cache",
       });
       console.log("data");
 

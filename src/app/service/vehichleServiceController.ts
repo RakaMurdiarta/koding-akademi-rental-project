@@ -83,7 +83,10 @@ export class vehicleServiceController {
     console.log("masuk");
 
     try {
-      const response = await fetch(`${domainUrl}${endpoint}`);
+      const response = await fetch(`${domainUrl}${endpoint}`, {
+        method: "GET",
+        cache: "no-cache",
+      });
       console.log("data");
 
       if (!response.ok) {
@@ -104,7 +107,10 @@ export class vehicleServiceController {
     console.log("masuk");
 
     try {
-      const response = await fetch(`${domainUrl}${endpoint}?id=${id}`);
+      const response = await fetch(`${domainUrl}${endpoint}?id=${id}`, {
+        method: "GET",
+        cache: "no-cache",
+      });
       console.log("data");
 
       if (!response.ok) {
@@ -148,9 +154,11 @@ export class vehicleServiceController {
 
     try {
       const response = await fetch(`${domainUrl}${endpoint}`, {
+        method: "GET",
         headers: {
           Authorization: `Bearer ${jwt}`,
         },
+        cache: "no-cache",
       });
       console.log("data");
 
@@ -172,9 +180,11 @@ export class vehicleServiceController {
 
     try {
       const response = await fetch(`${domainUrl}${endpoint}`, {
+        method: "GET",
         headers: {
           Authorization: `Bearer ${jwt}`,
         },
+        cache: "no-cache",
       });
       console.log("data");
 
