@@ -1,6 +1,7 @@
 "use client";
 import {
   CustomerList,
+  CustomerListData,
   adminServiceController,
 } from "@/app/service/adminServiceController";
 import {
@@ -8,13 +9,15 @@ import {
   ExclamationCircleIcon,
 } from "@heroicons/react/24/solid";
 import { Dialog, Transition } from "@headlessui/react";
-import React, { FC, useState, Fragment } from "react";
+import React, { FC, useState, Fragment, useEffect } from "react";
 import { toast } from "react-toastify";
+import { getCookie } from "cookies-next";
 
 // The DataTable component with Tailwind CSS for styling
-const AdminTable: FC<CustomerList> = ({ data }) => {
+const AdminTable = () => {
   const [selectedId, setSelectedID] = useState("");
   const [isOpen, setIsOpen] = useState(false);
+  const [data, setData] = useState<CustomerListData[]>([]);
 
   const openModal = (id: string) => {
     setIsOpen(true);
@@ -24,6 +27,26 @@ const AdminTable: FC<CustomerList> = ({ data }) => {
   const toggleModal = () => {
     setIsOpen(!isOpen);
   };
+
+  const getRequestList = async () => {
+    const jwt = getCookie("jwt") as string;
+    const vehicleService = new adminServiceController();
+
+    const data = await vehicleService
+      .getList(jwt)
+      .then((resp) => {
+        setData(resp.data);
+      })
+      .catch((err) => {
+        console.log(err);
+        console.log(err ?? "Something went wrong!");
+        setData([]);
+      });
+  };
+
+  useEffect(() => {
+    getRequestList();
+  }, []);
 
   const adminService = new adminServiceController();
   const approveOwner = async () => {
