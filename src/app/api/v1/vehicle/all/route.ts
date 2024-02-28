@@ -18,6 +18,7 @@ import { Payload } from "@/app/backend/interfaces/jwt";
 import { HttpStatusCode } from "axios";
 import { NextRequest, NextResponse } from "next/server";
 import { newVehicleServices } from "@/app/backend/services/impl/vehicle_services_impl";
+export const dynamic = "force-dynamic"
 export async function GET(req: NextRequest, res: NextResponse) {
   try {
     if (req.method !== "GET") {
