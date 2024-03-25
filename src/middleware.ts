@@ -9,6 +9,12 @@ export async function middleware(req: NextRequest, res: NextResponse) {
   const isAdmin = cookies().get("isAdmin") as RequestCookie;
   const pathname = req.nextUrl.pathname;
 
+  console.log("middleware");
+
+  if (!pathname.startsWith("/auth") && !cookie) {
+    return NextResponse.redirect(new URL("/auth/login", req.url));
+  }
+
   if (cookie) {
     if (pathname.startsWith("/auth")) {
       if (isAdmin.value === "true") {
@@ -30,9 +36,6 @@ export async function middleware(req: NextRequest, res: NextResponse) {
     }
   }
 
-  if (!pathname.startsWith("/auth") && !cookie) {
-    return NextResponse.redirect(new URL("/auth/login", req.url));
-  }
   return;
 }
 
@@ -42,6 +45,6 @@ export const config = {
     "/vehicle/:path*",
     "/auth/:path*",
     "/admin/:path*",
-    "/user/:path*",
+    "/my/:path*",
   ],
 };
