@@ -16,7 +16,7 @@ import {
 import { OwnerRequestHistory } from "@prisma/client";
 import { HttpStatusCode } from "axios";
 import { NextRequest, NextResponse } from "next/server";
-
+export const dynamic = "force-dynamic"
 export async function GET(req: NextRequest, res: NextResponse) {
   try {
     if (req.method !== "GET") {
