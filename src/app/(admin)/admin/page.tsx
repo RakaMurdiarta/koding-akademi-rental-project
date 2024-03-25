@@ -1,35 +1,18 @@
 export const dynamic = "force-dynamic";
 
-import React, { FC, useEffect } from "react";
+import React from "react";
 import AdminTable from "./adminTable";
-import { cookies } from "next/headers";
-import { RequestCookie } from "next/dist/compiled/@edge-runtime/cookies";
-import {
-  CustomerListData,
-  adminServiceController,
-} from "@/app/service/adminServiceController";
+import { CustomerListData } from "@/app/service/adminServiceController";
+import { adminservice } from "@/app/backend/services/impl/admin_service_impl";
 
 const Page = async () => {
+  let requestList: CustomerListData[] | [];
   const getRequestList = async () => {
-    const cookie = cookies().get("jwt") as RequestCookie;
-    const jwt = cookie.value as string;
-    const vehicleService = new adminServiceController();
-
-    const data = await vehicleService
-      .getList(jwt)
-      .then((resp) => {
-        return resp.data;
-      })
-      .catch((err) => {
-        console.log(err);
-        console.log(err ?? "Something went wrong!");
-        return [];
-      });
-
+    const data = adminservice.getListRequestOwner();
     return data;
   };
 
-  const requestList: CustomerListData[] | [] = await getRequestList();
+  requestList = await getRequestList();
 
   return <AdminTable data={requestList} />;
 };

@@ -3,15 +3,14 @@ import { Dialog, Transition } from "@headlessui/react";
 import React, { FC, useState, Fragment } from "react";
 import {
   AddVehicle,
-  Rental,
-  Vehicle,
   vehicleServiceController,
 } from "@/app/service/vehichleServiceController";
-import { formatDateString, formatToRupiahIntl } from "../../../utils";
+import { formatDateString, formatToRupiahIntl } from "../../utils";
 import { toast } from "react-toastify";
 import { Form, Formik } from "formik";
 import AuthInput from "@/components/ui/form/input";
 import addVehicleValidation from "@/lib/validationSchema/addVehicleValidation";
+import { Vehicle } from "@prisma/client";
 
 type prop = {
   data: Vehicle[];
@@ -61,38 +60,42 @@ const MyVehicles: FC<prop> = ({ data }) => {
         </button>
 
         <div className="w-full grid grid-cols-1 sm:grid-cols-2 2xl:grid-cols-3 gap-6">
-          {data.map((vehicle, index) => (
-            <div
-              key={index}
-              className="group block relative overflow-hidden rounded-xl transition-all ease-in-out duration-300 hover:shadow-xl"
-            >
-              <div className="w-full h-full transition-all ease-in-out duration-300">
-                <img
-                  src={vehicle.imageUrl}
-                  alt={vehicle.model}
-                  className="w-full min-h-[300px] brightness-100 object-cover object-center brightness-100 group-hover:brightness-50 transition-all ease-in-out duration-300"
-                />
-              </div>
-              <div className="bg-white w-full absolute bottom-[-150px] p-4 transition-all ease-in-out duration-300 group-hover:bottom-0 flex justify-between">
-                <div className="flex flex-col gap-1 w-1/2">
-                  <p className="font-bold text-base min-h-[3rem] overflow-ellipsis">
-                    {vehicle.model}
-                  </p>
-                  <p className="text-xs italic">Plate Number</p>
-                  <p className="text-sm">{vehicle.identityNumber}</p>
+          {data.length > 0 ? (
+            data.map((vehicle, index) => (
+              <div
+                key={index}
+                className="group block relative overflow-hidden rounded-xl transition-all ease-in-out duration-300 hover:shadow-xl"
+              >
+                <div className="w-full h-full transition-all ease-in-out duration-300">
+                  <img
+                    src={vehicle.imageUrl}
+                    alt={vehicle.model}
+                    className="w-full min-h-[300px] brightness-100 object-cover object-center brightness-100 group-hover:brightness-50 transition-all ease-in-out duration-300"
+                  />
                 </div>
-                <div className="h-auto flex flex-col w-1/2 gap-1 items-end justify-end">
-                  <div>
-                    <p className="text-xs italic text-end">Price</p>
-                    <p className="font-bold">
-                      {formatToRupiahIntl(vehicle.price)}
-                      <span className="font-normal">/day</span>
+                <div className="bg-white w-full absolute bottom-[-150px] p-4 transition-all ease-in-out duration-300 group-hover:bottom-0 flex justify-between">
+                  <div className="flex flex-col gap-1 w-1/2">
+                    <p className="font-bold text-base min-h-[3rem] overflow-ellipsis">
+                      {vehicle.model}
                     </p>
+                    <p className="text-xs italic">Plate Number</p>
+                    <p className="text-sm">{vehicle.identityNumber}</p>
+                  </div>
+                  <div className="h-auto flex flex-col w-1/2 gap-1 items-end justify-end">
+                    <div>
+                      <p className="text-xs italic text-end">Price</p>
+                      <p className="font-bold">
+                        {formatToRupiahIntl(vehicle.price)}
+                        <span className="font-normal">/day</span>
+                      </p>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          ))}
+            ))
+          ) : (
+            <p>No Data!</p>
+          )}
         </div>
       </div>
       <Transition appear show={isOpen} as={Fragment}>

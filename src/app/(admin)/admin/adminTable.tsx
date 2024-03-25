@@ -46,50 +46,54 @@ const AdminTable: FC<CustomerList> = ({ data }) => {
           </h1>
           <p>Welcome back, Admin!</p>
         </div>
-        <table className="min-w-full leading-normal">
-          <thead>
-            <tr className="bg-gray-100 text-left text-gray-600 uppercase text-sm leading-normal">
-              <th className="py-3 px-1">#</th>
-              <th className="py-3 px-5">ID</th>
-              <th className="py-3 px-5 text-center">Status</th>
-              <th className="py-3 px-5 text-center">Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            {data.map((item, index) => (
-              <tr className="border-b border-gray-200" key={item.id}>
-                <td className="py-2 px-1">{index + 1}</td>
-                <td className="py-2 px-5">{item.customerId}</td>
-                <td className="py-2 px-5 text-center">
-                  <div
-                    className={`p-2 rounded-md ${
-                      item.status === "accepted"
-                        ? "bg-green-500 text-white font-medium"
-                        : "bg-yellow-500 text-white font-medium"
-                    }`}
-                  >
-                    {item.status}
-                  </div>
-                </td>
-                <td className="py-2 px-5 text-center">
-                  {/* Example action buttons with Tailwind CSS */}
-                  <button className="">
-                    {item.status === "accepted" ? (
-                      <CheckCircleIcon className=" text-green-500 w-10 h-10" />
-                    ) : (
-                      <ExclamationCircleIcon
-                        className=" text-yellow-500 w-10 h-10"
-                        onClick={() => {
-                          openModal(item.customerId);
-                        }}
-                      />
-                    )}
-                  </button>
-                </td>
+        {data.length > 0 ? (
+          <table className="min-w-full leading-normal">
+            <thead>
+              <tr className="bg-gray-100 text-left text-gray-600 uppercase text-sm leading-normal">
+                <th className="py-3 px-1">#</th>
+                <th className="py-3 px-5">ID</th>
+                <th className="py-3 px-5 text-center">Status</th>
+                <th className="py-3 px-5 text-center">Action</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {data.map((item, index) => (
+                <tr className="border-b border-gray-200" key={item.id}>
+                  <td className="py-2 px-1">{index + 1}</td>
+                  <td className="py-2 px-5">{item.customerId}</td>
+                  <td className="py-2 px-5 text-center">
+                    <div
+                      className={`p-2 rounded-md ${
+                        item.status === "accepted"
+                          ? "bg-green-500 text-white font-medium"
+                          : "bg-yellow-500 text-white font-medium"
+                      }`}
+                    >
+                      {item.status}
+                    </div>
+                  </td>
+                  <td className="py-2 px-5 text-center">
+                    {/* Example action buttons with Tailwind CSS */}
+                    <button className="">
+                      {item.status === "accepted" ? (
+                        <CheckCircleIcon className=" text-green-500 w-10 h-10" />
+                      ) : (
+                        <ExclamationCircleIcon
+                          className=" text-yellow-500 w-10 h-10"
+                          onClick={() => {
+                            openModal(item.customerId);
+                          }}
+                        />
+                      )}
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        ) : (
+          <p>No Data</p>
+        )}
       </div>
 
       <Transition appear show={isOpen} as={Fragment}>

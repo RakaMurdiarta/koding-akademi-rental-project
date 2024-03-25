@@ -55,7 +55,6 @@ export interface Rental {
   amountDue: number;
   noOfDays: number;
   active: boolean;
-  customer: Customer;
   vehicle: BaseVehicle;
 }
 
@@ -94,14 +93,17 @@ export class vehicleServiceController {
 
       if (!response.ok) {
         const errorResponse = await response.json();
-        throw new Error(errorResponse.message || "Something went wrong");
+        console.log("errresponse", errorResponse);
+        // throw new Error(errorResponse.message || "Something went wrong");
       }
 
       const data = await response.json();
       console.log(data);
       return data;
     } catch (err: any) {
-      throw new Error(err.message || "Something went wrong");
+      console.log("err", err);
+      throw [];
+      // throw new Error(err.message || "Something went wrong");
     }
   }
 

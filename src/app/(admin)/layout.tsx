@@ -41,7 +41,7 @@ export default function RootLayout({
       <body className={inter.className}>
         <div className="flex max-h-screen overflow-hidden relative">
           <div
-            className={`absolute z-[100] top-0 lg:relative w-full xs:w-10/12 sm:w-8/12 lg:w-[600px] h-screen shadow-2xl transition-all ease-in-out duration-[700ms] 
+            className={`absolute z-[100] top-0 lg:relative w-full xs:w-10/12 sm:w-8/12 lg:w-[600px] h-screen shadow-2xl transition-all ease-in-out duration-700
             ${
               isNavOpen
                 ? "left-0"

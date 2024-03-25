@@ -14,27 +14,19 @@ export async function middleware(req: NextRequest, res: NextResponse) {
       if (isAdmin.value === "true") {
         return NextResponse.redirect(new URL("/admin", req.url));
       }
-      return NextResponse.redirect(new URL("/user", req.url));
-    } else {
-      if (pathname.startsWith("/admin")) {
-        if (isAdmin.value === "false") {
-          return NextResponse.redirect(new URL("/user", req.url));
-        }
-      }
-
-      if (pathname.startsWith("/user")) {
-        if (isAdmin.value === "true") {
-          return NextResponse.redirect(new URL("/admin", req.url));
-        }
-      }
+      return NextResponse.redirect(new URL("/", req.url));
     }
 
-    if (pathname === "/") {
-      if (isAdmin.value === "true") {
-        return NextResponse.redirect(new URL("/admin", req.url));
-      } else {
-        return NextResponse.redirect(new URL("/user", req.url));
-      }
+    if (pathname.startsWith("/admin") && isAdmin.value === "false") {
+      return NextResponse.redirect(new URL("/", req.url));
+    }
+
+    if (pathname === "/" && isAdmin.value === "true") {
+      return NextResponse.redirect(new URL("/admin", req.url));
+    }
+
+    if (pathname.startsWith("/user") && isAdmin.value === "true") {
+      return NextResponse.redirect(new URL("/admin", req.url));
     }
   }
 
