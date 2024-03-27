@@ -2,7 +2,7 @@
 import { useRouter } from "next/navigation";
 import React, { FC, useEffect } from "react";
 import { formatToRupiahIntl } from "./utils";
-import { Vehicle } from "@prisma/client";
+import { Vehicle } from "../service/vehichleServiceController";
 
 type prop = {
   data: Vehicle[];
@@ -35,9 +35,14 @@ const VehicleList: FC<prop> = ({ data }) => {
               </div>
               <div className="bg-white w-full absolute bottom-[-150px] p-4 transition-all ease-in-out duration-300 group-hover:bottom-0 flex justify-between">
                 <div className="flex flex-col gap-1 w-1/2">
-                  <p className="font-bold text-base min-h-[3rem] overflow-ellipsis">
-                    {vehicle.model}
-                  </p>
+                  <div className="min-h-[3rem]">
+                    <p className="font-bold text-base  overflow-ellipsis">
+                      {vehicle.model}
+                    </p>
+                    <p className="font-bold text-xs overflow-ellipsis">
+                      {vehicle.owner.customer.fullname}
+                    </p>
+                  </div>
                   <p className="text-xs italic">Plate Number</p>
                   <p className="text-sm">{vehicle.identityNumber}</p>
                 </div>
