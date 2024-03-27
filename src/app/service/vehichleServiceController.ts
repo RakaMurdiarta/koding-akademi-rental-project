@@ -78,7 +78,11 @@ const domainUrl = process.env.NEXT_PUBLIC_DOMAIN_URL;
 
 export class vehicleServiceController {
   public async getAll(jwt: string): Promise<BaseApiResponse<Vehicle[]>> {
-    const endpoint = "/api/v1/vehicle/all";
+    /*
+      @TODO : define api route for get all vehicle  into variable endpoint
+    */
+    // const endpoint = "/api/v1/vehicle/all";
+    const endpoint = "";
     console.log("masuk");
 
     try {

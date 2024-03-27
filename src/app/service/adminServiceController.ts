@@ -32,7 +32,11 @@ export class adminServiceController {
   public async register(
     data: RegisterAdmin
   ): Promise<ApiResponse<RegisterAdminResponse>> {
-    console.log("login form data:", data);
+    
+    /*
+      @TODO : define api route for register into variable endpoint
+      @type : string
+    */
     const endpoint = "/api/v1/auth/admin/register";
     try {
       const response = await axios.post(endpoint, data);

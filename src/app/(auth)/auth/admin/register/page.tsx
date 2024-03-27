@@ -24,6 +24,9 @@ const Page = () => {
   const router = useRouter();
 
   const register = async (data: RegisterAdmin) => {
+    /*
+      @TODO : call service admin here from class adminServiceController
+    */
     await adminService
       .register(data)
       .then((resp) => {
