@@ -55,6 +55,7 @@ export interface Rental {
   amountDue: number;
   noOfDays: number;
   active: boolean;
+  customer: Customer;
   vehicle: BaseVehicle;
 }
 
