@@ -21,8 +21,12 @@ export type loginResponse = {
 
 export class AuthServiceController {
   public async login(data: loginFormData): Promise<ApiResponse<loginResponse>> {
-    console.log("login form data:", data);
-    const endpoint = "/api/v1/auth/login";
+    /*
+      @TODO : define api route for login into variable endpoint
+      @type : string
+    */
+
+    const endpoint = "";
     try {
       const response = await axios.post(endpoint, data);
       return response;
@@ -34,8 +38,11 @@ export class AuthServiceController {
   }
 
   public async register(data: registerFormData): Promise<any> {
-    console.log("register form data:", data);
-    const endpoint = "/api/v1/auth/register";
+    /*
+      @TODO : define api route for register into variable endpoint
+      @type : string
+    */
+    const endpoint = "";
     const requestData = {
       customer_type: data.customer_type,
       email: data.email,

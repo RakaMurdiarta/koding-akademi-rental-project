@@ -10,9 +10,6 @@ type prop = {
 
 const VehicleList: FC<prop> = ({ data }) => {
   const router = useRouter();
-  useEffect(() => {
-    console.log(data);
-  }, []);
 
   return (
     <div className="w-full flex flex-col gap-6 text-[#909090] py-10">

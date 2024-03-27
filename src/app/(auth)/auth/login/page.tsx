@@ -24,19 +24,12 @@ const Page = () => {
   const router = useRouter();
 
   const login = async (data: loginFormData) => {
-    await authService
-      .login(data)
-      .then((resp) => {
-        toast.success("Login Succesful!");
-        setCookie("jwt", resp.data.data.token);
-        setCookie("isAdmin", resp.data.data.isAdmin);
-        setTimeout(() => {
-          router.push("/");
-        }, 2500);
-      })
-      .catch((err) => {
-        toast.error(err.message ?? "Please try again!");
-      });
+    /*
+      @TODO : call login service here from class AuthServiceController
+    */
+    alert(
+      "@TODO : call login ervice from class AuthServiceController on /src/app/(auth)/auth/login"
+    );
   };
 
   return (

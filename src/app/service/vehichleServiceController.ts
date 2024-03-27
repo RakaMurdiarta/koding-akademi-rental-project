@@ -77,72 +77,12 @@ export interface AddVehicle {
 const domainUrl = process.env.NEXT_PUBLIC_DOMAIN_URL;
 
 export class vehicleServiceController {
-  public async getAll(jwt: string): Promise<BaseApiResponse<Vehicle[]>> {
-    /*
-      @TODO : define api route for get all vehicle  into variable endpoint
-    */
-    // const endpoint = "/api/v1/vehicle/all";
-    const endpoint = "";
-    console.log("masuk");
-
-    try {
-      const response = await fetch(`${domainUrl}${endpoint}`, {
-        method: "GET",
-        cache: "no-cache",
-        headers: {
-          Authorization: `Bearer ${jwt}`,
-        },
-      });
-      console.log("data");
-
-      if (!response.ok) {
-        const errorResponse = await response.json();
-        console.log("errresponse", errorResponse);
-        // throw new Error(errorResponse.message || "Something went wrong");
-      }
-
-      const data = await response.json();
-      console.log(data);
-      return data;
-    } catch (err: any) {
-      console.log("err", err);
-      throw [];
-      // throw new Error(err.message || "Something went wrong");
-    }
-  }
-
-  public async getById(
-    id: string,
-    jwt: string
-  ): Promise<BaseApiResponse<Vehicle>> {
-    const endpoint = "/api/v1/vehicle/get";
-    console.log("masuk");
-
-    try {
-      const response = await fetch(`${domainUrl}${endpoint}?id=${id}`, {
-        method: "GET",
-        cache: "no-cache",
-        headers: {
-          Authorization: `Bearer ${jwt}`,
-        },
-      });
-      console.log("data");
-
-      if (!response.ok) {
-        const errorResponse = await response.json();
-        throw new Error(errorResponse.message || "Something went wrong");
-      }
-
-      const data = await response.json();
-      console.log(data);
-      return data;
-    } catch (err: any) {
-      throw new Error(err.message || "Something went wrong");
-    }
-  }
-
   public async rent(data: Rent): Promise<ApiResponse<any>> {
-    const endpoint = "/api/v1/customer/rent";
+    /*
+      @TODO : define api route for rent vehicle into variable endpoint
+      @type : string
+    */
+    const endpoint = "";
     try {
       const response = await axiosInstance.post(endpoint, data);
       console.log("data");
@@ -153,7 +93,11 @@ export class vehicleServiceController {
     }
   }
   public async return(id: string): Promise<ApiResponse<any>> {
-    const endpoint = "/api/v1/customer/return";
+    /*
+      @TODO : define api route for return vehicle into variable endpoint
+      @type : string
+    */
+    const endpoint = "";
     try {
       const response = await axiosInstance.post(endpoint, { invoice_id: id });
       console.log("data");
@@ -164,60 +108,12 @@ export class vehicleServiceController {
     }
   }
 
-  public async getRented(jwt: string): Promise<BaseApiResponse<Rental[]>> {
-    const endpoint = "/api/v1/customer/rent/list";
-
-    try {
-      const response = await fetch(`${domainUrl}${endpoint}`, {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${jwt}`,
-        },
-        cache: "no-cache",
-      });
-      console.log("data");
-
-      if (!response.ok) {
-        const errorResponse = await response.json();
-        throw new Error(errorResponse.message || "Something went wrong");
-      }
-
-      const data = await response.json();
-      console.log(data);
-      return data;
-    } catch (err: any) {
-      throw new Error(err.message || "Something went wrong");
-    }
-  }
-
-  public async getMy(jwt: string): Promise<BaseApiResponse<Vehicle[]>> {
-    const endpoint = "/api/v1/customer/vehicle/list";
-
-    try {
-      const response = await fetch(`${domainUrl}${endpoint}`, {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${jwt}`,
-        },
-        cache: "no-cache",
-      });
-      console.log("data");
-
-      if (!response.ok) {
-        const errorResponse = await response.json();
-        throw new Error(errorResponse.message || "Something went wrong");
-      }
-
-      const data = await response.json();
-      console.log(data);
-      return data;
-    } catch (err: any) {
-      throw new Error(err.message || "Something went wrong");
-    }
-  }
-
   public async add(data: AddVehicle): Promise<ApiResponse<any>> {
-    const endpoint = "/api/v1/customer/post/vehicle";
+    /*
+      @TODO : define api route for post vehicle into variable endpoint
+      @type : string
+    */
+    const endpoint = "";
     try {
       const response = await axiosInstance.post(endpoint, data);
       return response;

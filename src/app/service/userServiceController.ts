@@ -8,19 +8,12 @@ export type userStatus = "notOwner" | "pending" | "isOwner";
 const domainUrl = process.env.NEXT_PUBLIC_DOMAIN_URL;
 
 export class userServiceController {
-  public async isOwner(): Promise<ApiResponse<userStatus>> {
-    const endpoint = "/api/v1/customer/isowner";
-    try {
-      const response = await axiosInstance.get(endpoint);
-      return response;
-    } catch (err: any) {
-      const error: AxiosError<BaseApiResponse<any>> = err;
-      throw error.response?.data;
-    }
-  }
-
   public async requestOwner(): Promise<ApiResponse<any>> {
-    const endpoint = "/api/v1/customer/request/owner";
+    /*
+      @TODO : define api route for requestOwner into variable endpoint
+      @type : string
+    */
+    const endpoint = "";
     try {
       const response = await axiosInstance.get(endpoint);
       return response;

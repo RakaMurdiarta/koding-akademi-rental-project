@@ -8,6 +8,7 @@ import UserController from "@/utils/controllers/userController";
 import { customerService } from "@/app/backend/services/impl/customer_service_impl";
 import { Rents } from "@prisma/client";
 import { newVehicleServices } from "@/app/backend/services/impl/vehicle_services_impl";
+import { NextRequest, NextResponse } from "next/server";
 
 const Page = async () => {
   const cookie = cookies().get("jwt") as RequestCookie;
@@ -17,20 +18,7 @@ const Page = async () => {
 
   let rentedVehicles: Rental[];
 
-  const data = await customerService.getListRentByCustomerId(userId);
-
-  async function restructRentedVehicle(rent: Rents): Promise<Rental> {
-    const vehicle = await newVehicleServices.getVehicleById(rent.vehicleId);
-
-    return {
-      ...rent,
-      startDate: rent.startDate ? rent.startDate.toISOString() : "",
-      returnDate: rent.returnDate ? rent.returnDate.toISOString() : "",
-      vehicle: vehicle,
-    };
-  }
-
-  rentedVehicles = await Promise.all(data.map(restructRentedVehicle));
+  rentedVehicles = [];
 
   return <RentedVehicles data={rentedVehicles} />;
 };

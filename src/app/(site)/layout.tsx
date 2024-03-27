@@ -8,6 +8,7 @@ import { RequestCookie } from "next/dist/compiled/@edge-runtime/cookies";
 import jwt from "jsonwebtoken";
 import UserController from "@/utils/controllers/userController";
 import { userStatus } from "../service/userServiceController";
+import { NextRequest, NextResponse } from "next/server";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,13 +21,11 @@ export default async function RootLayout({
   const token = cookie.value as string;
   const user = new UserController(token);
 
-  const getIsOwner = async () => {
-    const userId = user.userId;
-    const isOwner = await customerService.isOwner(userId);
-    return isOwner;
-  };
+  /*
+      @TODO : please get getIsOwner directly from prisma service;
+  */
 
-  const data = (await getIsOwner()) as userStatus;
+  const data: userStatus = "notOwner"; // put here
 
   console.log(data);
   return (

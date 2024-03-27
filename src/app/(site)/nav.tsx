@@ -16,10 +16,7 @@ import {
 } from "../service/userServiceController";
 import { ToastContainer, toast } from "react-toastify";
 import { logout } from "./utils";
-// import { UserProvider } from "@/app/contexts/userContext";
-// import UserController from "@/app/utils/controllers/userController";
 import { customerService } from "../backend/services/impl/customer_service_impl";
-import { UserProvider } from "@/contexts/userContext";
 import UserController from "@/utils/controllers/userController";
 
 const Nav = ({ children, data }: { children: React.ReactNode; data: any }) => {
@@ -33,16 +30,12 @@ const Nav = ({ children, data }: { children: React.ReactNode; data: any }) => {
   const userService = new userServiceController();
 
   const requestOwner = async () => {
-    await userService
-      .requestOwner()
-      .then((resp) => {
-        toast.success("Request has been sent!");
-        window.location.reload();
-      })
-      .catch((err) => {
-        console.log(err ?? "Something went wrong!");
-        toast.error("Something went wrong!");
-      });
+    /*
+      @TODO : call requestOwner service here from class userServiceController
+    */
+    alert(
+      "@TODO : call requestOwner service from class vehicleServiceController on /src/app/(site)/nav.tsx"
+    );
   };
 
   useEffect(() => {
@@ -148,9 +141,7 @@ const Nav = ({ children, data }: { children: React.ReactNode; data: any }) => {
           }`}
         ></div>
         <div className="w-full min-h-screen overflow-hidden overflow-y-scroll p-8 bg-[#f8f8f8] relative z-10">
-          <UserProvider>
-            <div className="w-full h-full pt-8 sm:p-8 lg:px-12">{children}</div>
-          </UserProvider>
+          <div className="w-full h-full pt-8 sm:p-8 lg:px-12">{children}</div>
         </div>
       </div>
       <ToastContainer

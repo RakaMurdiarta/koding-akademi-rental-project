@@ -25,19 +25,11 @@ const Page = () => {
 
   const register = async (data: RegisterAdmin) => {
     /*
-      @TODO : call service admin here from class adminServiceController
+      @TODO : call register admin service here from class adminServiceController
     */
-    await adminService
-      .register(data)
-      .then((resp) => {
-        toast.success("Register Succesful!");
-        setTimeout(() => {
-          router.push("/");
-        }, 2500);
-      })
-      .catch((err) => {
-        toast.error(err.message ?? "Please try again!");
-      });
+    alert(
+      "@TODO : call register admin service from class adminServiceController on /src/app/(auth)/auth/admin/register"
+    );
   };
 
   return (

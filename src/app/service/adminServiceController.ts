@@ -32,12 +32,11 @@ export class adminServiceController {
   public async register(
     data: RegisterAdmin
   ): Promise<ApiResponse<RegisterAdminResponse>> {
-    
     /*
       @TODO : define api route for register into variable endpoint
       @type : string
     */
-    const endpoint = "/api/v1/auth/admin/register";
+    const endpoint = "";
     try {
       const response = await axios.post(endpoint, data);
       return response;
@@ -52,7 +51,11 @@ export class adminServiceController {
     const data: ApproveOwner = {
       customerid: id,
     };
-    const endpoint = "/api/v1/admin/accept/request";
+    /*
+      @TODO : define api route for approveOwner into variable endpoint
+      @type : string
+    */
+    const endpoint = "";
     try {
       const response = await axios.post(endpoint, data);
       return response;
@@ -60,34 +63,6 @@ export class adminServiceController {
       const error: AxiosError<BaseApiResponse<any>> = err as any;
 
       throw error.response?.data;
-    }
-  }
-
-  public async getList(
-    jwt: string
-  ): Promise<BaseApiResponse<CustomerListData[]>> {
-    const endpoint = "/api/v1/admin/owner/register/list";
-
-    try {
-      const response = await fetch(`${domainUrl}${endpoint}`, {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${jwt}`,
-        },
-        cache: "no-cache",
-      });
-      console.log("data");
-
-      if (!response.ok) {
-        const errorResponse = await response.json();
-        throw new Error(errorResponse.message || "Something went wrong");
-      }
-
-      const data = await response.json();
-      console.log(data);
-      return data;
-    } catch (err: any) {
-      throw new Error(err.message || "Something went wrong");
     }
   }
 }

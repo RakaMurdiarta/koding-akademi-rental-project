@@ -20,15 +20,12 @@ const RentedVehicles: FC<prop> = ({ data }) => {
 
   const vehicleService = new vehicleServiceController();
   const returnVehicle = async (id: string) => {
-    await vehicleService
-      .return(id)
-      .then((resp) => {
-        toast.success("Rented Vehicle Returned!");
-        router.push("/");
-      })
-      .catch((err) => {
-        toast.error(err.message ?? "Please try again!");
-      });
+    /*
+      @TODO : call returnVehicle service here from class vehicleServiceController
+    */
+    alert(
+      "@TODO : call returnVehicle service from class vehicleServiceController on /src/app/(site)/my/rented/rentedVehicles.tsx"
+    );
   };
 
   return (

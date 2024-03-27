@@ -6,12 +6,11 @@ import { Vehicle } from "@prisma/client";
 
 const Page = async () => {
   let allVehicle: Vehicle[] | [];
-  const getAllVehicle = async () => {
-    const vehicle = newVehicleServices.getListvehicles();
-    return vehicle;
-  };
+  /*
+      @TODO : please get allVehicleList directly from prisma service;
+  */
 
-  allVehicle = await getAllVehicle();
+  allVehicle = []; //put here
 
   return <VehicleList data={allVehicle} />;
 };

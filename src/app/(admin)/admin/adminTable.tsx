@@ -11,7 +11,6 @@ import { Dialog, Transition } from "@headlessui/react";
 import React, { FC, useState, Fragment } from "react";
 import { toast } from "react-toastify";
 
-// The DataTable component with Tailwind CSS for styling
 const AdminTable: FC<CustomerList> = ({ data }) => {
   const [selectedId, setSelectedID] = useState("");
   const [isOpen, setIsOpen] = useState(false);
@@ -27,15 +26,12 @@ const AdminTable: FC<CustomerList> = ({ data }) => {
 
   const adminService = new adminServiceController();
   const approveOwner = async () => {
-    await adminService
-      .approveOwner(selectedId)
-      .then((resp) => {
-        window.location.reload();
-        toast.success("Approved!");
-      })
-      .catch((err) => {
-        toast.error(err.message ?? "Please try again!");
-      });
+    /*
+      @TODO : call approveOwner service here from class adminServiceController
+    */
+    alert(
+      "@TODO : call approveOwner service from class adminServiceController on /src/app/(admin)/admin/adminTable.tsx"
+    );
   };
   return (
     <>
@@ -152,7 +148,3 @@ const AdminTable: FC<CustomerList> = ({ data }) => {
 };
 
 export default AdminTable;
-
-// Example usage of DataTable component
-// Assuming 'data' is the array provided above
-// <DataTable data={data} />
