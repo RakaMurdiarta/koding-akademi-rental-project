@@ -3,12 +3,12 @@ import { formatToRupiahIntl } from "@/app/(site)/utils";
 import { Form, Formik } from "formik";
 import {
   Rent,
+  Vehicle,
   vehicleServiceController,
 } from "@/app/service/vehichleServiceController";
 import React, { FC, Fragment, useEffect, useState } from "react";
 import rentValidation from "@/lib/validationSchema/rentValidation";
 import { toast } from "react-toastify";
-import { Vehicle } from "@prisma/client";
 import useDatePicker from "@/hooks/useDatepicker";
 import Datepicker, {
   DateRangeType,
@@ -27,8 +27,8 @@ const DetailVehicles: FC<prop> = ({ vehicle }) => {
     useDatePicker();
   const router = useRouter();
   const [dateValue, setDateValue] = useState<DateValueType>({
-    startDate: "",
-    endDate: "",
+    startDate: todayDateString,
+    endDate: tomorrowDateString,
   });
 
   const handleChangeDate = (e: DateValueType) => {
@@ -70,7 +70,7 @@ const DetailVehicles: FC<prop> = ({ vehicle }) => {
         <div className="w-full flex flex-col gap-6 text-[#909090] py-10">
           <div className="flex flex-col gap-2">
             <h1 className="text-4xl md:text-5xl font-bold">{vehicle.model}</h1>
-            <p>owner: {vehicle.ownerId}</p>
+            <p>owner: {vehicle.owner.customer.fullname}</p>
           </div>
           <div className="flex w-full gap-4">
             <div className="w-7/12 h-[320px] rounded-md overflow-hidden mx-auto">

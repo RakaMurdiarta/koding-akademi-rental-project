@@ -17,20 +17,9 @@ const Page = async () => {
 
   let rentedVehicles: Rental[];
 
-  const data = await customerService.getListRentByCustomerId(userId);
-
-  async function restructRentedVehicle(rent: Rents): Promise<Rental> {
-    const vehicle = await newVehicleServices.getVehicleById(rent.vehicleId);
-
-    return {
-      ...rent,
-      startDate: rent.startDate ? rent.startDate.toISOString() : "",
-      returnDate: rent.returnDate ? rent.returnDate.toISOString() : "",
-      vehicle: vehicle,
-    };
-  }
-
-  rentedVehicles = await Promise.all(data.map(restructRentedVehicle));
+  rentedVehicles = (await customerService.getListRentByCustomerId(
+    userId
+  )) as Rental[];
 
   return <RentedVehicles data={rentedVehicles} />;
 };

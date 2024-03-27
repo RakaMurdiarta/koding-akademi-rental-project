@@ -2,7 +2,7 @@ export const dynamic = "force-dynamic";
 import React from "react";
 import { newVehicleServices } from "../backend/services/impl/vehicle_services_impl";
 import VehicleList from "./vehicleList";
-import { Vehicle } from "@prisma/client";
+import { Vehicle } from "../service/vehichleServiceController";
 
 const Page = async () => {
   let allVehicle: Vehicle[] | [];
@@ -11,7 +11,7 @@ const Page = async () => {
     return vehicle;
   };
 
-  allVehicle = await getAllVehicle();
+  allVehicle = (await getAllVehicle()) as Vehicle[];
 
   return <VehicleList data={allVehicle} />;
 };
