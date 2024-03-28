@@ -21,11 +21,13 @@ export default async function RootLayout({
   const token = cookie.value as string;
   const user = new UserController(token);
 
-  /*
-      @TODO : please get getIsOwner directly from prisma service;
-  */
+  const getIsOwner = async () => {
+    const userId = user.userId;
+    const isOwner = await customerService.isOwner(userId);
+    return isOwner;
+  };
 
-  const data: userStatus = "notOwner"; // put here
+  const data = (await getIsOwner()) as userStatus;
 
   console.log(data);
   return (
