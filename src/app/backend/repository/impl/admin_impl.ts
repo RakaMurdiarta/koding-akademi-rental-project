@@ -39,7 +39,7 @@ export class AdminRepository implements IAdmin {
         where: { customerId },
         data: { status: StatusRequestOwner.accepted },
       });
-      console.log("INI UPDTE", update);
+      
       if (update) {
         return true;
       } else {

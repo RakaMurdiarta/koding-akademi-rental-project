@@ -13,29 +13,38 @@ class VehicleServices implements IVehicleServices {
     this.vehicleRepo = new VehcileRepository();
   }
 
-  getListvehicles = async (): Promise<Vehicle[]>  =>{
-      const vehicles = await this.vehicleRepo.getListVehicles()
+  getListvehicles = async (): Promise<Vehicle[]> => {
+    /* 
 
-      if(!vehicles) {
-        throw new ApiError("failed get list of vehicle",HttpStatusCode.BadRequest)
-      }
+        @TODO : call method getListVehicles from vehicle repository 
+    */
 
-      return vehicles
-  }
+    //should remove this when get data from admin repository
+    const vehicles: Vehicle[] = [];
+
+    if (!vehicles) {
+      throw new ApiError(
+        "failed get list of vehicle",
+        HttpStatusCode.BadRequest
+      );
+    }
+
+    return vehicles;
+  };
 
   getVehicleById = async (vId: string): Promise<Vehicle> => {
+    const vehicle: Vehicle | null = null;
 
-    const vehicle = await this.vehicleRepo.getVehicleById(vId)
+    /* 
+        @TODO : call method getVehicleById from vehicle repository 
+    */
 
-      if(!vehicle) {
-        throw new ApiError("failed get vehicle",HttpStatusCode.BadRequest)
-      }
+    if (!vehicle) {
+      throw new ApiError("failed get vehicle", HttpStatusCode.BadRequest);
+    }
 
-      return vehicle
-
-  }
-
-  
+    return vehicle;
+  };
 }
 
 export const newVehicleServices = new VehicleServices();

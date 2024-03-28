@@ -1,4 +1,12 @@
-import { $Enums, Customer, CustomerType, Rents, ReturnHistory, Vehicle } from "@prisma/client";
+import {
+  $Enums,
+  Customer,
+  CustomerType,
+  Owner,
+  Rents,
+  ReturnHistory,
+  Vehicle,
+} from "@prisma/client";
 import CustomerRepository from "../../repository/impl/customer_impl";
 import { ICustomerService } from "../iserviceCustomer";
 import { ApiError } from "../../exception/baseError";
@@ -57,9 +65,15 @@ class CustomerService implements ICustomerService {
     vehicle: Omit<Vehicle, "id" | "ownerId">,
     customer_id: string
   ): Promise<Vehicle> => {
-    //add customer id into owner table before post vehicle
-    // const owner = await this.ownerRepo.insert(customer_id);
-    const owner = await this.ownerRepo.getOwnerByCustomerId(customer_id);
+    const cvehicle: Vehicle | null = null;
+    const owner: Owner | null = null;
+
+    /* 
+
+        @TODO : call method getOwnerByCustomerId from owner repository 
+        @Description : check is customer is owner or not before add vehicle
+
+    */
 
     if (!owner) {
       throw new ApiError(
@@ -67,13 +81,12 @@ class CustomerService implements ICustomerService {
         HttpStatusCode.BadRequest
       );
     }
-    const data = {
-      ...vehicle,
-      ownerId: owner.id,
-    };
 
+    /* 
+
+        @TODO : call method addVehicle from vehicle repository 
+    */
     //post vehicle
-    const cvehicle = await this.vehicleRepo.addVehicle(data);
     if (!cvehicle) {
       throw new ApiError("failed post vehicle", HttpStatusCode.BadRequest);
     }
@@ -82,13 +95,13 @@ class CustomerService implements ICustomerService {
   };
 
   getCustomerByEmail = async (email: string): Promise<Customer | null> => {
-    const customer = await this.customerRepository.getCustomerByEmail(email);
+    /* 
 
-    if (!customer) {
-      return null;
-    }
+        @TODO : call method insert from customer repository
+        @param : email 
+    */
 
-    return customer;
+    return null;
   };
 
   createRequestOwner = async (customerId: string): Promise<string> => {
@@ -120,31 +133,35 @@ class CustomerService implements ICustomerService {
 
     const returnRent = await this.returnRepo.insert(data);
 
-    if(!returnRent){
-        throw new ApiError("failed to create return history")
+    if (!returnRent) {
+      throw new ApiError("failed to create return history");
     }
 
-    return returnRent
+    return returnRent;
   };
 
   getListRentByCustomerId = async (custId: string): Promise<Rents[] | []> => {
-      const rentList = await this.rentRepo.getListRentByCustomerId(custId)
-      if(rentList.length<=0){
-        return []
-      }
+    const rentList = await this.rentRepo.getListRentByCustomerId(custId);
+    if (rentList.length <= 0) {
+      return [];
+    }
 
-      return rentList
-  }
+    return rentList;
+  };
 
-  getListVehicleByCustomerId = async (custId: string): Promise<Vehicle[] | []> => {
-      const vehicle = await this.customerRepository.getVehicleListByCustomerId(custId)
+  getListVehicleByCustomerId = async (
+    custId: string
+  ): Promise<Vehicle[] | []> => {
+    const vehicle = await this.customerRepository.getVehicleListByCustomerId(
+      custId
+    );
 
-      if(vehicle.length<=0){
-        return []
-      }
+    if (vehicle.length <= 0) {
+      return [];
+    }
 
-      return vehicle
-  }
+    return vehicle;
+  };
 }
 
 export const customerService = new CustomerService();

@@ -24,50 +24,31 @@ class CustomerRepository implements ICustomer {
     type: CustomerType,
     cname?: string
   ): Promise<Customer | null> {
-    const customer: Customer = await this.repository.customer.create({
-      data: {
-        email,
-        customerType: type,
-        password,
-        phone,
-        cname,
-        fullname,
-      },
-    });
+    /* 
 
-    if (!customer) {
-      throw new ApiError("failed to create customer");
-    } else {
-      return customer;
-    }
+        @TODO : add data or record into customer table  
+    */
+    return null;
   }
 
   getCustomerByEmail = async (email: string): Promise<Customer | null> => {
-    const customer = await this.repository.customer.findFirst({
-      where: {
-        email,
-      },
-    });
+    /* 
 
-    if (!customer) {
-      return null;
-    }
+        @TODO : get customer by email
+        @param:  email  
+    */
 
-    return customer;
+    return null;
   };
 
   getCustomerById = async (custId: string): Promise<Customer | null> => {
-    const customer = await this.repository.customer.findFirst({
-      where: {
-        id: custId,
-      },
-    });
+    /* 
 
-    if (!customer) {
-      return null;
-    }
+        @TODO : get data or record by customer id
+        @param: customer id  
+    */
 
-    return customer;
+    return null;
   };
 
   requestOwner = async (customerId: string): Promise<string | null> => {
@@ -111,10 +92,10 @@ class CustomerRepository implements ICustomer {
       },
       include: {
         owner: { include: { customer: true } },
-      }
+      },
     });
 
-    return vehicleList
+    return vehicleList;
   };
 }
 

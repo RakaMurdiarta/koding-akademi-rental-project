@@ -39,7 +39,7 @@ class RentServices implements IRentServices {
     if (!vehi) {
       throw new ApiError("invalid credential", HttpStatusCode.NotFound);
     }
-    console.log(new Date(from));
+    
     const noOfDays = calculateNumberOfDays(new Date(from), new Date(until));
 
     const data: Omit<Rents, "id"> = {

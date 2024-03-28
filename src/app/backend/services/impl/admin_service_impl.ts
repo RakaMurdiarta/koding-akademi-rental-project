@@ -15,7 +15,12 @@ class AdminService implements IAdminService {
   }
 
   addAdmin = async (admin: Omit<Admin, "id">): Promise<Admin> => {
-    const adm = await this.adminrepo.insert(admin.username, admin.password);
+    //should remove this when get data from admin repository
+    const adm: Admin | null = null;
+    /* 
+
+        @TODO : call method insert from admin repository 
+    */
 
     if (!adm) {
       throw new ApiError("failed create admin", HttpStatusCode.BadRequest);
@@ -24,28 +29,54 @@ class AdminService implements IAdminService {
   };
 
   acceptOwnerRequest = async (customerId: string): Promise<boolean> => {
-    const resp = await this.adminrepo.acceptRequestOwner(customerId);
+    /* 
+
+        @TODO : call method acceptRequestOwner from admin repository 
+        @Param : customerId
+        @Description : harcode set variable resp to true for exam purpose
+    */
+    const resp = true;
 
     if (resp) {
-      await this.ownerRepo.insert(customerId);
+      /* 
+        @TODO : call method insert from owner repository 
+        @Param : customerId
+    */
+      //@here
     }
-    //addOwner
+
     return resp;
   };
 
   getListRequestOwner = async (): Promise<OwnerRequestHistory[]> => {
-    return await this.adminrepo.getListRequesttOwner();
+    //should remove this when get data from admin repository
+    const data: OwnerRequestHistory[] = [];
+    /* 
+        @TODO : call method getListRequesttOwner from admin repository 
+        @Param : customerId
+    */
+
+    return data;
   };
 
-  getAdminByEmail = async (email: string): Promise<{ id: string; username: string; password: string; } | null> => {
-      const admin = await this.adminrepo.getAdminByEmail(email)    
+  getAdminByEmail = async (
+    email: string
+  ): Promise<{ id: string; username: string; password: string } | null> => {
+    //should remove this when get data from admin repository
+    const admin: { id: string; username: string; password: string } | null =
+      null;
 
-      if(!admin){
-        return null
-      }
+    /* 
+        @TODO : call method getAdminByEmail from admin repository 
+        @Param : email
+    */
 
-      return admin
-  }
+    if (!admin) {
+      return null;
+    }
+
+    return admin;
+  };
 }
 
 export const adminservice = new AdminService();

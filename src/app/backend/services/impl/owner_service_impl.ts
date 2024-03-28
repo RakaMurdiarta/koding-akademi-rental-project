@@ -14,16 +14,28 @@ class OwnerService implements IOwnerService {
     this.vehicleRepo = new VehcileRepository();
   }
 
-  addOwner = async (owner: Omit<Owner,"id">): Promise<Owner> => {
-    const resp = await this.ownerRepo.insert(owner.customerId);
+  addOwner = async (owner: Omit<Owner, "id">): Promise<Owner> => {
+    //should remove this when get data from owner repository
+    const resp: Owner | null = null;
+    /* 
+
+        @TODO : call method insert from owner repository 
+    */
 
     if (!resp) {
       throw new ApiError("failed create owner", HttpStatusCode.BadRequest);
     }
     return resp;
   };
+
   postVehicle = async (vehicle: Vehicle): Promise<Vehicle> => {
-    const postVehicle = await this.vehicleRepo.addVehicle(vehicle);
+    //should remove this when get data from admin repository
+    const postVehicle: Vehicle | null = null;
+
+    /* 
+
+        @TODO : call method addVehicle from vehicle repository 
+    */
 
     if (!postVehicle) {
       throw new ApiError("failed post vehicle", HttpStatusCode.BadRequest);
